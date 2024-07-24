@@ -1,4 +1,4 @@
-```R
+```r
 ### 1. add DNA barcodes to seurat object
 library(Seurat)
 rna_seurat_object<-readRDS("rna_seurat.rds")
