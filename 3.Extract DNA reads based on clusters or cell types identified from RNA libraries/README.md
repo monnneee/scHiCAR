@@ -46,7 +46,7 @@ for n in {1..25} # all clusters
   
 do
   
-python3 readName_match.py -l sample${m}_DNA_readName -s cluster${n}/sample${m}_barcode.txt -o final_readName/cluster${n}_sample${m}_readName  
+python3 match.py -l sample${m}_DNA_readName -s cluster${n}/sample${m}_barcode.txt -o final_readName/cluster${n}_sample${m}_readName  
   
 done  
   
