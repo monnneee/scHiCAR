@@ -39,7 +39,6 @@ pigz -p 8 cluster${i}_R1.fastq
 pigz -p 8 cluster${i}_R2.fastq
 done
 
-### The above cluster${i}_R*.fastq as pseudo-bulk fastq files were used for running nf-core/hicar 
-(https://github.com/nf-core/hicar).
+### 5. The above cluster${i}_R*.fastq as pseudo-bulk fastq files were used for running nf-core/hicar (https://github.com/nf-core/hicar)
 nextflow pull jianhong/hicar -r dev2rc #dev2rc is the newest version
 nextflow run jianhong/hicar -profile singularity --genome mm10 -r dev2rc --input samplesheet.csv --skip_fastqc --skip_cutadapt --outdir result --skip_interactions --skip_tads --skip_diff_analysis --skip_peak_qc --skip_igv --skip_trackhub --skip_circos --pairtools_parse_version parse2 -resume
