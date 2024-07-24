@@ -1,4 +1,4 @@
-### 1.extract DNA barcodes for each sample and matched with RNA barcodes
+### 1. extract DNA barcodes for each sample and matched with RNA barcodes
 ```bash
 for i in {1..20}  #all samples 
   
