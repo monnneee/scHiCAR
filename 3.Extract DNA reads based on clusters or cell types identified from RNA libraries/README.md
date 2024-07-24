@@ -12,16 +12,16 @@ cat sample*_RNA_ATAC.barcode > total_RNA_ATAC.barcode # merge the total samples 
 ```
   
 ### 2. export DNA barcodes of each cell from the same cluster/cell type for each sample
-Rscript **dna_barcode.R** #outputs DNA barcodes for each cluster that includes mixed samples  
-  
 ```bash  
-for i in {1..25} #all clusters or  cell types are consistent with the "cluster_list" in "dna_barcode.R"  
+Rscript dna_barcode.R # outputs DNA barcodes for each cluster that includes mixed samples  
+  
+for i in {1..25} # all clusters or  cell types are consistent with the "cluster_list" in "dna_barcode.R"  
   
 do
   
 perl -i -p -e "s/_/\t/g" cluster${i}/total_dna_barcode # split DNA barcode lines: 1st column is sampleID and 2nd column is DNA barcodes  
   
-for j in {1..20}  #all samples  
+for j in {1..20}  # all samples  
   
 do
   
@@ -36,17 +36,17 @@ done #outputs DNA barcodes for each samples in each cluster
 ```bash
 mkdir final_readName  
   
-for m in {1..20} #all samples  
+for m in {1..20} # all samples  
   
 do
   
-zcat DNA_fastq/sample${m}_R1.fastq.gz | awk -F " " '{if(NR%4==1){print $1}}' > sample${m}_DNA_readName #extract all read names from read1 fastq file 
+zcat DNA_fastq/sample${m}_R1.fastq.gz | awk -F " " '{if(NR%4==1){print $1}}' > sample${m}_DNA_readName # extract all read names from read1 fastq file 
 
-for n in {1..25} #all clusters  
+for n in {1..25} # all clusters  
   
 do
   
-python3 **readName_match.py** -l sample${m}_DNA_readName -s cluster${n}/sample${m}_barcode.txt -o final_readName/cluster${n}_sample${m}_readName  
+python3 readName_match.py -l sample${m}_DNA_readName -s cluster${n}/sample${m}_barcode.txt -o final_readName/cluster${n}_sample${m}_readName  
   
 done  
   
@@ -55,11 +55,11 @@ done
   
 ### 4. generate fastq file for each cluster or cell type
 ```bash
-for i in {1..25} #all clusters  
+for i in {1..25} # all clusters  
   
 do
   
-for j in {1..20}  #all samples  
+for j in {1..20}  # all samples  
   
 do
   
