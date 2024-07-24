@@ -1,5 +1,5 @@
-### 1. add DNA barcodes to seurat object
 ```R
+### 1. add DNA barcodes to seurat object
 library(Seurat)
 rna_seurat_object<-readRDS("rna_seurat.rds")
 dna_barcode<-read.table("./total_RNA_DNA_barcode.txt",sep='\t',header=F,row.names=1) #1st column is RNA barcode and 2nd column is DNA barcode
