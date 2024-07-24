@@ -9,7 +9,7 @@ sort -k1b,1 sample${i}_dna_barcode|join -j 1 - ATAC-RNA_barcode.dict|awk '{print
 done  
   
 cat sample*_RNA_ATAC.barcode > total_RNA_ATAC.barcode # merge the total samples together that are used in the 'dna_barcode.R' script  
-  
+```
   
 ### 2. export DNA barcodes of each cell from the same cluster/cell type for each sample
 ```bash
@@ -30,7 +30,7 @@ awk '{if($1=="sample'$j'"){print$2}}' cluster${i}/total_dna_barcode > cluster${i
 done  
   
 done #outputs DNA barcodes for each samples in each cluster  
-
+```
   
 ### 3. extract DNA reads based on barcodes for each samples in each cluster
 ```bash
@@ -51,7 +51,7 @@ python3 readName_match.py -l sample${m}_DNA_readName -s cluster${n}/sample${m}_b
 done  
   
 done  
-  
+```
   
 ### 4. generate fastq file for each cluster or cell type
 ```bash
@@ -74,12 +74,11 @@ pigz -p 8 cluster${i}_R1.fastq
 pigz -p 8 cluster${i}_R2.fastq  
   
 done  
-  
+```
   
 ### 5. The above cluster${i}_R*.fastq as pseudo-bulk fastq files were used for running nf-core/hicar (https://github.com/nf-core/hicar)
 ```bash
 nextflow pull jianhong/hicar -r dev2rc #dev2rc is the newest version  
   
-nextflow run jianhong/hicar -profile singularity --genome mm10 -r dev2rc --input samplesheet.csv --skip_fastqc --skip_cutadapt --outdir result --skip_interactions --skip_tads --skip_diff_analysis --skip_peak_qc --skip_igv --skip_trackhub --skip_circos --pairtools_parse_version parse2 -resume  
-
-  
+nextflow run jianhong/hicar -profile singularity --genome mm10 -r dev2rc --input samplesheet.csv --skip_fastqc --skip_cutadapt --outdir result --skip_interactions --skip_tads --skip_diff_analysis --skip_peak_qc --skip_igv --skip_trackhub --skip_circos --pairtools_parse_version parse2 -resume
+```  
