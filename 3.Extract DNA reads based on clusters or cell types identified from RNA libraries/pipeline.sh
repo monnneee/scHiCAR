@@ -5,7 +5,7 @@ sort -k1b,1 ${i}_dna_barcode|join -j 1 - ATAC-RNA_barcode.dict|awk '{print"'$i'_
 done
 cat sample*_RNA_ATAC.barcode > total_RNA_ATAC.barcode # merge total samples together
 ### 2. export DNA barcodes of each cell from the same cluster/cell type for each sample
-Rscript dna_barcode.R #
+Rscript dna_barcode.R # each cluster has an output file named "total_dna_barcode" that includes mixed samples
 for i in {1..20} #all cluster names or  cell types consistent with "cluster_list" of dna_barcode.R
 do
 cluster$i/total_dna_barcode
