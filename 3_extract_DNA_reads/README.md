@@ -10,7 +10,7 @@ sort -k1b,1 sample${i}_dna_barcode|join -j 1 - DNA-RNA_barcode.dict|awk '{print"
   
 done  
   
-cat sample*_RNA_DNA.barcode > total_RNA_DNA.barcode # merge the total samples together that are used in the 'dna_barcode.R' script  
+cat sample*_RNA_DNA.barcode > total_RNA_DNA_barcode.txt # merge the total samples together that are used in the 'dna_barcode.R' script  
 ```
   
 #### 2. export DNA barcodes of each cell from the same cluster/cell type for each sample
