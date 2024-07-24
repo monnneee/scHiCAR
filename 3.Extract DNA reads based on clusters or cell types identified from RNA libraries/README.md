@@ -1,4 +1,5 @@
 ### 1.extract DNA barcodes for each sample and matched with RNA barcodes
+```bash
 for i in {1..20}  #all samples 
   
 do
@@ -11,6 +12,7 @@ cat sample*_RNA_ATAC.barcode > total_RNA_ATAC.barcode # merge the total samples 
   
   
 ### 2. export DNA barcodes of each cell from the same cluster/cell type for each sample
+```bash
 Rscript dna_barcode.R #outputs DNA barcodes for each cluster that includes mixed samples  
   
 for i in {1..25} #all clusters or  cell types are consistent with the "cluster_list" in "dna_barcode.R"  
@@ -31,13 +33,14 @@ done #outputs DNA barcodes for each samples in each cluster
 
   
 ### 3. extract DNA reads based on barcodes for each samples in each cluster
+```bash
 mkdir final_readName  
   
 for m in {1..20} #all samples  
   
 do
   
-zcat DNA_fastq/sample${m}_R1.fastq.gz | `awk -F " " '{if(NR%4==1){print $1}}'` > sample${m}_DNA_readName #extract all read names from read1 fastq file 
+zcat DNA_fastq/sample${m}_R1.fastq.gz | awk -F " " '{if(NR%4==1){print $1}}' > sample${m}_DNA_readName #extract all read names from read1 fastq file 
 
 for n in {1..25} #all clusters  
   
@@ -51,6 +54,7 @@ done
   
   
 ### 4. generate fastq file for each cluster or cell type
+```bash
 for i in {1..25} #all clusters  
   
 do
@@ -73,6 +77,7 @@ done
   
   
 ### 5. The above cluster${i}_R*.fastq as pseudo-bulk fastq files were used for running nf-core/hicar (https://github.com/nf-core/hicar)
+```bash
 nextflow pull jianhong/hicar -r dev2rc #dev2rc is the newest version  
   
 nextflow run jianhong/hicar -profile singularity --genome mm10 -r dev2rc --input samplesheet.csv --skip_fastqc --skip_cutadapt --outdir result --skip_interactions --skip_tads --skip_diff_analysis --skip_peak_qc --skip_igv --skip_trackhub --skip_circos --pairtools_parse_version parse2 -resume  
