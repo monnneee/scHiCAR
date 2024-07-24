@@ -6,11 +6,11 @@ for i in {1..20}  #all samples
   
 do
   
-sort -k1b,1 sample${i}_dna_barcode|join -j 1 - DNA-RNA_barcode.dict|awk '{print"sample'$i'_"$2"\tsample'$i'_"$1}' OFS='\t' > sample${i}_RNA_ATAC.barcode # the 1st column is RNA barcode and 2nd column is matched DNA barcode  
+sort -k1b,1 sample${i}_dna_barcode|join -j 1 - DNA-RNA_barcode.dict|awk '{print"sample'$i'_"$2"\tsample'$i'_"$1}' OFS='\t' > sample${i}_RNA_DNA.barcode # the 1st column is RNA barcode and 2nd column is matched DNA barcode  
   
 done  
   
-cat sample*_RNA_ATAC.barcode > total_RNA_ATAC.barcode # merge the total samples together that are used in the 'dna_barcode.R' script  
+cat sample*_RNA_DNA.barcode > total_RNA_DNA.barcode # merge the total samples together that are used in the 'dna_barcode.R' script  
 ```
   
 #### 2. export DNA barcodes of each cell from the same cluster/cell type for each sample
