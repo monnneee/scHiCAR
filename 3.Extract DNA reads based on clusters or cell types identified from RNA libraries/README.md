@@ -1,3 +1,3 @@
 ### 1. export DNA barcodes of each cell in the same cluster/cell type
-Rscript dna_barcode.r
+Rscript dna_barcode.R
 ### 2. extract DNA reads based on barcodes
