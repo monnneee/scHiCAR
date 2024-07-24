@@ -1,7 +1,7 @@
 ### 1. add DNA barcodes to seurat object
 library(Seurat)
 rna_seurat_object<-readRDS("rna_seurat.rds")
-dna_barcode<-read.table("./total_RNA_DNA_barcode.txt",sep='\t',header=F,row.names=1) #1st column is RNA barcode and 2nd column is DNA barcode
+dna_barcode<-read.table("./total_RNA_DNA_barcode.dict",sep='\t',header=F,row.names=1) #1st column is RNA barcode and 2nd column is DNA barcode
 dna_bd<-dna_barcode$V2
 names(dna_bd)<-rownames(dna_barcode)
 rna_seurat_object$temp<-names(rna_seurat_object$orig.ident)
