@@ -1,4 +1,4 @@
-<mark>This pipeline was used for extracting DNA reads from same clusters or cell types that identidied by RNA library</mark>
+<mark>**This pipeline was used for extracting DNA reads from same clusters or cell types that identidied by RNA library**</mark>
   
 #### 1. extract DNA barcodes for each sample and matched with RNA barcodes
 ```bash
