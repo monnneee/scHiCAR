@@ -8,6 +8,7 @@ rna_seurat_object$temp<-names(rna_seurat_object$orig.ident)
 rna_filtered_object<-subset(rna_seurat_object,temp %in% rownames(dna_barcode)) #filter out cells without matched DNA barcodes
 rna_filtered_object$temp<-NULL
 rna_filtered_object <- AddMetaData(object = rna_filtered_object, metadata = dna_bd,col.name = 'dna_barcode')
+
 ### 2. extract DNA barcodes after identified clusters or annotated cell types:
 cluster<-names(table(rna_filtered_object$cluster)) #get total cluster name
 cluster_list<-as.list(cluster)
