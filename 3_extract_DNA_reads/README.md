@@ -18,7 +18,6 @@ Rscript dna_barcode.R # outputs DNA barcodes for each cluster that includes mixe
      
 #### 2. export DNA barcodes from the same cluster or cell type for each sample
 ```bash  
-  
 for i in {1..25} # all clusters or  cell types are consistent with the "cluster_list" in "dna_barcode.R"  
   
 do
