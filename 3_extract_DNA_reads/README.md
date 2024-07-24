@@ -12,10 +12,12 @@ done
   
 cat sample*_RNA_DNA.barcode > total_RNA_DNA_barcode.txt # merge the total samples together that are used in the 'dna_barcode.R' script  
 ```
-  
-#### 2. export DNA barcodes of each cell from the same cluster/cell type for each sample
+```bash
+Rscript dna_barcode.R # outputs DNA barcodes for each cluster that includes mixed samples
+```
+     
+#### 2. export DNA barcodes from the same cluster/cell type for each sample
 ```bash  
-Rscript dna_barcode.R # outputs DNA barcodes for each cluster that includes mixed samples  
   
 for i in {1..25} # all clusters or  cell types are consistent with the "cluster_list" in "dna_barcode.R"  
   
