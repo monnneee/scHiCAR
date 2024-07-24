@@ -1,6 +1,6 @@
 <mark>This pipeline was used for extracting DNA reads from same clusters or cell types that identidied by RNA library</mark>
   
-## 1. extract DNA barcodes for each sample and matched with RNA barcodes
+# 1. extract DNA barcodes for each sample and matched with RNA barcodes
 ```bash
 for i in {1..20}  #all samples 
   
@@ -13,7 +13,7 @@ done
 cat sample*_RNA_ATAC.barcode > total_RNA_ATAC.barcode # merge the total samples together that are used in the 'dna_barcode.R' script  
 ```
   
-## 2. export DNA barcodes of each cell from the same cluster/cell type for each sample
+# 2. export DNA barcodes of each cell from the same cluster/cell type for each sample
 ```bash  
 Rscript dna_barcode.R # outputs DNA barcodes for each cluster that includes mixed samples  
   
@@ -34,7 +34,7 @@ done
 done #outputs DNA barcodes for each samples in each cluster  
 ```
   
-## 3. extract DNA reads based on barcodes for each samples in each cluster
+# 3. extract DNA reads based on barcodes for each samples in each cluster
 ```bash
 mkdir final_readName  
   
@@ -55,7 +55,7 @@ done
 done  
 ```
   
-## 4. generate fastq file for each cluster or cell type
+# 4. generate fastq file for each cluster or cell type
 ```bash
 for i in {1..25} # all clusters  
   
@@ -78,7 +78,7 @@ pigz -p 8 cluster${i}_R2.fastq
 done  
 ```
   
-## 5. The above cluster${i}_R*.fastq as pseudo-bulk fastq files were used for running nf-core/hicar (https://github.com/nf-core/hicar)
+# 5. The above cluster${i}_R*.fastq as pseudo-bulk fastq files were used for running nf-core/hicar (https://github.com/nf-core/hicar)
 ```bash
 nextflow pull jianhong/hicar -r dev2rc #dev2rc is the newest version  
   
