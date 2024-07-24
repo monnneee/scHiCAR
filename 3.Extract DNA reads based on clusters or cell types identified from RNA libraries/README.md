@@ -13,7 +13,7 @@ cat sample*_RNA_ATAC.barcode > total_RNA_ATAC.barcode # merge the total samples 
   
 ### 2. export DNA barcodes of each cell from the same cluster/cell type for each sample
 ```bash
-Rscript `dna_barcode.R` #outputs DNA barcodes for each cluster that includes mixed samples  
+Rscript **dna_barcode.R** #outputs DNA barcodes for each cluster that includes mixed samples  
   
 for i in {1..25} #all clusters or  cell types are consistent with the "cluster_list" in "dna_barcode.R"  
   
@@ -46,7 +46,7 @@ for n in {1..25} #all clusters
   
 do
   
-python3 readName_match.py -l sample${m}_DNA_readName -s cluster${n}/sample${m}_barcode.txt -o final_readName/cluster${n}_sample${m}_readName  
+python3 **readName_match.py** -l sample${m}_DNA_readName -s cluster${n}/sample${m}_barcode.txt -o final_readName/cluster${n}_sample${m}_readName  
   
 done  
   
