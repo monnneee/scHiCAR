@@ -17,4 +17,4 @@ mkdir cluster_list[[i]]
 bd<-subset(rna_filtered_object,cluster %in% cluster_list[[i]])$dna_barcode
 names(bd)<-NULL
 write.table(bd,paste(cluster_list[[i]],"/total_dna_barcode",sep=""),sep="\t",quote=FALSE,col.names=FALSE,row.names=FALSE)
-} #each cluster has one *_dna_barcode file
+} #each cluster has an output file named "total_dna_barcode" that includes mixed samples
