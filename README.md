@@ -1,15 +1,13 @@
 # scHiCAR
 ## Pipelines for scHiCAR data processing
 
-### Requirements
-
-To run this pipeline, you need to install the following software:
+### Tools requirements
 
 - **Python3**
 - **snakemake**:  `pip install snakemake==5.13.0`
 - **cutadapt**: `pip install cutadapt==3.3`
 - **STAR**: [v2.7.5c](https://github.com/alexdobin/STAR/releases/tag/2.7.5c)
-  
+
 ### 1. Process FASTQ files of RNA library with Snakemake ([README.md](https://github.com/monnneee/scHiCAR/tree/main/1_RNA))
 a. Extract ***RNA barcodes*** from the read sequence and add them to the beginning of read 1 (*_R1_001.fastq). Remove the adaptors from the read sequence. If a read sequence does not contain any RNA barcodes, remove the entire read.
 
