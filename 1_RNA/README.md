@@ -1,6 +1,6 @@
 ### 1. move your raw fastq files to 'fq' folder
 
-Make sure that the files have the suffix  `_R1_001.fastq.gz`  or `_R2_001.fastq.gz`.
+Make sure that the files have the suffix like `_R1_001.fastq.gz`  or `_R2_001.fastq.gz`.
 
 ### 2.create samples.json file
 
