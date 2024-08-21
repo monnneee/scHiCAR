@@ -20,5 +20,5 @@ a. Extract ***DNA barcodes*** from the read sequence and add them to the read na
 
 b. Generate a filtered list of DNA barcodes by removing background noise
 
-### 3. Generate pseudo-bulk FASTQ files of DNA library
+### 3. Generate pseudo-bulk FASTQ files of DNA library ([README.md](https://github.com/monnneee/scHiCAR/tree/main/3_create_pseudo-bulk_fastq))
 Match the ***DNA barcodes*** corresponding to the cells in each cluster or cell type identified from the RNA library. Extract reads with read names containing these DNA barcodes from the processed FASTQ files of the DNA library, and generate a new FASTQ files for each cluster or cell type.
