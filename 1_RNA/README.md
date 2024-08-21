@@ -6,7 +6,7 @@ Your_folder
 ├── sample2json.py
 ├── linear_sciRNA_18bp_barcode.txt.gz
 ├── Snakefile
-├── fq         # move your raw fastq files to this folder
+├── fq  # move your raw fastq files to this folder
 │   ├── DNA_example_R1_001.fastq.gz
 │   └── DNA_example_R2_001.fastq.gz
 └── script
