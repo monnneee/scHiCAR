@@ -1,7 +1,7 @@
 # scHiCAR
 ## Pipelines for scHiCAR data processing
 
-### Tools requirements
+### Tools requirement
 
 - **Python3**
 - **snakemake**:  `pip install snakemake==5.13.0`
