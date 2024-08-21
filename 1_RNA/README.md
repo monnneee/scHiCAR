@@ -7,13 +7,11 @@ Your_folder
 ├── linear_sciRNA_18bp_barcode.txt.gz
 ├── Snakefile
 ├── fq  # move your raw fastq files to this folder
-│   ├── DNA_example_R1_001.fastq.gz
-│   └── DNA_example_R2_001.fastq.gz
+│   ├── RNA_example_R1_001.fastq.gz
+│   └── RNA_example_R2_001.fastq.gz
 └── script
     ├── barcode_hash_v2.py
-    ├── fq_barcode_correction.py  
-    ├── raw_fq_update.py
-    └── sample2json.py
+    ├── fq_barcode_correction_R1.py
 ```
 
 ### 2.create samples.json file
