@@ -1,0 +1,18 @@
+{
+    "__default__":
+    {
+        "job": "{rule}.{wildcards.sample}",
+        "mem": "30G",
+        "out": "cluster_log/{rule}.{wildcards.sample}.out",
+        "err": "cluster_log/{rule}.{wildcards.sample}.err"
+    },
+        "bwa_align":
+    {
+        "mem": "30G"
+    },
+    "flip_pairsam_sort":
+    {
+        "mem": "30G"
+    }
+
+}

@@ -1,0 +1,24 @@
+  
+# gcb hg38
+# BWA_INDEX: ~/data/Index/hg38_BWA_index/hg38.fa
+# frag_path: ~/data/Index/hg38_BWA_index/hg38_cviqi.bed
+# chromsizes : ~/data/Index/hg38_BWA_index/hg38.chrom.sizes
+
+# dcc hg38
+# BWA_INDEX: /datacommons/ydiaolab/genome_ref/hg38_BWA_index/hg38.fa
+# chromsizes : /datacommons/ydiaolab/genome_ref/hg38_BWA_index/hg38.chrom.sizes
+# genome: hg38
+# genome: mm10
+
+
+
+BWA_INDEX: /datacommons/ydiaolab/genome_ref/hg38_BWA_index/hg38.fa
+chromsizes : /datacommons/ydiaolab/genome_ref/hg38_BWA_index/hg38.chrom.sizes
+genome: hg38
+
+
+cool_bin: 10000
+
+SAMPLES_JSON: './samples.json'
+
+CLUSTER_JSON: './cluster.json'
