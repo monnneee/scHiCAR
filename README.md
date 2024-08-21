@@ -3,10 +3,10 @@
 
 ### Requirements
 
-This pipeline requires installing the following software:
+To run this pipeline, you need to install the following software:
 
-- **snakemake**: pip install snakemake==5.13.0
-- **cutadapt**: pip install cutadapt==3.3
+- **snakemake**:  `pip install snakemake==5.13.0`
+- **cutadapt**: `pip install cutadapt==3.3`
   
 ### 1. Process FASTQ files of RNA library with Snakemake
 Extract ***RNA barcodes*** from the read sequence and add them to the beginning of read 1 (*_R1.fastq). Remove the adaptors from the read sequence. If a read sequence does not contain any RNA barcodes, remove the entire read.
