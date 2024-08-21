@@ -1,0 +1,171 @@
+shell.prefix("set -eo pipefail; echo BEGIN at $(date); ")
+shell.suffix("; exitstat=$?; echo END at $(date); echo exit status was $exitstat; exit $exitstat")
+import collections
+configfile: "config.yaml"
+
+FILES = json.load(open(config['SAMPLES_JSON'])) ##  fastq for each lane
+SAMPLES = sorted(FILES.keys())
+TARGETS = []
+tmp='./tmp'
+
+## update the fastq ## add the gzip later
+TARGETS.extend(expand("03_corrected_fq/{sample}_L001_R1_001.fastq.gz",sample = SAMPLES ))
+TARGETS.extend(expand("03_corrected_fq/{sample}_L001_R2_001.fastq.gz",sample = SAMPLES ))
+
+localrules: targetfiles, read_info_summary
+rule targetfiles:
+    input: TARGETS
+
+## run for each fastq pairs individually. 
+
+rule raw_fq_cut_tso:
+    input:
+        r1 = lambda wildcards: FILES[wildcards.sample]['R1'],
+        r2 = lambda wildcards: FILES[wildcards.sample]['R2']
+    output: 
+        r1 = temp("00_raw_fq_update/{sample}_noTSO_L001_R1_001.fastq"),
+        r2 = temp("00_raw_fq_update/{sample}_noTSO_L001_R2_001.fastq"),
+        r3 = "00_raw_fq_update/{sample}_withTSO_L001_R1_001.fastq",
+        r4 = "00_raw_fq_update/{sample}_withTSO_L001_R2_001.fastq"
+    shell:
+        "cutadapt -e 0.12  --untrimmed-output {output[0]}  --untrimmed-paired-output {output[1]}  -a 'CCCATGTACTCTGCGTTGATACCACTG;min_overlap=20'  -o {output[2]} -p {output[3]}  {input[0]} {input[1]}"
+
+rule raw_fq_cut_ME:
+    input:
+        r1 = "00_raw_fq_update/{sample}_noTSO_L001_R1_001.fastq",
+        r2 = "00_raw_fq_update/{sample}_noTSO_L001_R2_001.fastq"
+    output: 
+        r1 = temp("00_raw_fq_update/{sample}_noME_L001_R1_001.fastq"),
+        r2 = temp("00_raw_fq_update/{sample}_noME_L001_R2_001.fastq"),
+        r3 = "00_raw_fq_update/{sample}_withME_L001_R1_001.fastq",
+        r4 = "00_raw_fq_update/{sample}_withME_L001_R2_001.fastq"
+    shell:
+        "cutadapt -e 0.12  --untrimmed-output {output[0]}  --untrimmed-paired-output {output[1]}  -a 'CTGTCTCTTATACACATCT;min_overlap=18'  -o {output[2]} -p {output[3]} {input[0]} {input[1]}"
+
+
+rule raw_fq_extract_adapter1:
+    input:
+        r1 = "00_raw_fq_update/{sample}_noME_L001_R1_001.fastq",
+        r2 = "00_raw_fq_update/{sample}_noME_L001_R2_001.fastq"
+    output: 
+        r1 = "00_raw_fq_update/{sample}_adapter1RNA_L001_R1_001.fastq",
+        r2 = "00_raw_fq_update/{sample}_adapter1RNA_L001_R2_001.fastq",
+        r3 = "00_raw_fq_update/{sample}_adapter1ME_L001_R1_001.fastq",
+        r4 = "00_raw_fq_update/{sample}_adapter1ME_L001_R2_001.fastq",
+        r5 = "00_raw_fq_update/{sample}_adapter1RNA_2bind_L001_R1_001.fastq",
+        r6 = "00_raw_fq_update/{sample}_adapter1RNA_2bind_L001_R2_001.fastq",
+        r7 = temp("00_raw_fq_update/{sample}_adapter1RNA_1bind_L001_R1_001.fastq"),
+        r8 = temp("00_raw_fq_update/{sample}_adapter1RNA_1bind_L001_R2_001.fastq")
+    shell:
+        """
+        cutadapt -e 0.2 --action=retain   -a 'AGATGTGTATAAGAGACAGNNNNNNNNX;min_overlap=8'  -o {output[2]} -p {output[3]} --untrimmed-output {output[0]} --untrimmed-paired-output {output[1]} {input[0]} {input[1]}
+        cutadapt -e 0.2 --action=retain   -a 'AACTCAGACCATTAATCTAGCCNNNNNX;min_overlap=8'  -o {output[4]} -p {output[5]} --untrimmed-output {output[6]} --untrimmed-paired-output {output[7]} {output[0]} {output[1]}
+        """
+
+
+rule raw_fq_extract_adapter_p23:
+    input:
+        r1 = "00_raw_fq_update/{sample}_adapter1RNA_1bind_L001_R1_001.fastq",
+        r2 = "00_raw_fq_update/{sample}_adapter1RNA_1bind_L001_R2_001.fastq"
+    output: 
+        r1 = temp("00_raw_fq_update/{sample}_adapter1RNA_adapter_p23_L001_R1_001.fastq"),
+        r2 = temp("00_raw_fq_update/{sample}_adapter1RNA_adapter_p23_L001_R2_001.fastq"),
+        r1_tmp = temp("00_raw_fq_update/{sample}_adapter1RNA_1bind_add10bp_L001_R1_001.fastq")
+    shell:
+        """
+        awk -F '\t' '{{if(NR%4==2) {{print "CCCCCCCCCC"$0}} else if (NR%4==0) {{print "FFFFFFFFFF"$0}} else {{print$0}}}}' {input[0]} > {output[2]}
+        cutadapt -j 11 --action=retain --discard-untrimmed -g  'NNNNNNNNNNNNAGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTNNNNNNGTGTAGATCTCGGTGGTCGTTTAAA;min_overlap=79; max_error_rate=0.086; required... CTGGAGTTCAGACGTGTGCTCTTCCGATCTNNNNNNNNNNNN;min_overlap=42; max_error_rate=0.13; required'  -m 116: -M 121:   -o {output[0]} -p {output[1]} {output[2]} {input[1]}
+        """
+
+rule raw_fq_extract_umi:
+    input:
+        r1 = "00_raw_fq_update/{sample}_adapter1RNA_adapter_p23_L001_R1_001.fastq",
+        r2 = "00_raw_fq_update/{sample}_adapter1RNA_adapter_p23_L001_R2_001.fastq"
+    output: 
+        r1 = temp("00_raw_fq_update/{sample}_adapter1RNA_adapter23_L001_R1_001.fastq"),
+        r2 = temp("00_raw_fq_update/{sample}_adapter1RNA_adapter23_L001_R2_001.fastq"),
+        r3 = temp("00_raw_fq_update/{sample}_adapter1RNA_adapter23_umi_L001_R1_001.fastq"),
+        r4 = temp("00_raw_fq_update/{sample}_adapter1RNA_adapter23_umi_L001_R2_001.fastq")
+    shell:
+        """
+        cutadapt -j 11 -u 12 -u -12 --rename='{{header}} barcode_umi={{r1.cut_prefix}}{{r1.cut_suffix}}' -m 92: -M 97: -o {output[0]} -p {output[1]} {input[0]} {input[1]}
+        cutadapt -j 11 --action=retain --discard-untrimmed -g  "NNNNNNGTGTAGATCTCGGTGGTCGTTTAAACTGGAGTTCAGACGTGTGCTCTTCCGATCT;min_overlap=61; max_error_rate=0.09;"  -m 59: -M 63: -o {output[2]} -p {output[3]} {output[0]} {output[1]}
+        """
+
+
+rule cut_R2_tso:
+    input:
+        r1 = "00_raw_fq_update/{sample}_adapter1RNA_adapter23_umi_L001_R1_001.fastq",
+        r2 = "00_raw_fq_update/{sample}_adapter1RNA_adapter23_umi_L001_R2_001.fastq"
+    output: 
+        r1 = temp("00_raw_fq_update/{sample}_cut_tso2_L001_R1_001.fastq.gz"),
+        r2 = temp("00_raw_fq_update/{sample}_cut_tso2_L001_R2_001.fastq.gz")
+    shell:
+        "cutadapt -u 6  --rename='{{header}} barcode2={{r1.cut_prefix}}' -e 0.15 --action=trim --minimum-length 27  -G 'XCAGTGGTATCAACGCAGAGTACATGGG;min_overlap=10' -o {output[0]} -p {output[1]} {input[0]} {input[1]}"
+
+
+rule cut_R2_polyA:
+    input:
+        r1 = "00_raw_fq_update/{sample}_cut_tso2_L001_R1_001.fastq.gz",
+        r2 = "00_raw_fq_update/{sample}_cut_tso2_L001_R2_001.fastq.gz"
+    output: 
+        r1 = temp("00_raw_fq_update/{sample}_cut_tso2_polyA_L001_R1_001.fastq.gz"),
+        r2 = temp("00_raw_fq_update/{sample}_cut_tso2_polyA_L001_R2_001.fastq.gz")
+    shell:
+        "cutadapt -e 0.15 --action=trim --minimum-length 27  -A 'AAAAAAAAAAAAAAAA;min_overlap=14' -o {output[0]} -p {output[1]} {input[0]} {input[1]}"
+
+rule cut_R2_truseq:
+    input:
+        r1 = "00_raw_fq_update/{sample}_cut_tso2_polyA_L001_R1_001.fastq.gz",
+        r2 = "00_raw_fq_update/{sample}_cut_tso2_polyA_L001_R2_001.fastq.gz"
+    output: 
+        r1 = "00_raw_fq_update/{sample}_cut_tso2_polyA_truseq_L001_R1_001.fastq",
+        r2 = "00_raw_fq_update/{sample}_cut_tso2_polyA_truseq_L001_R2_001.fastq"
+    shell:
+        "cutadapt -e 0.15 --action=trim --minimum-length 27  -A 'NNNNNAGATCGGAAGAGCACA;min_overlap=13' -o {output[0]} -p {output[1]} {input[0]} {input[1]}"
+
+
+rule barcode_QC: ## extract total barcodes list
+    input: "00_raw_fq_update/{sample}_cut_tso2_polyA_truseq_L001_R1_001.fastq"
+    output: "02_barcode_info/{sample}_raw_barcode_count.txt"
+    threads: 8 
+    shell:
+        """
+        awk  '{{if(NR%4==1) print substr($(NF-1),19,6) substr($NF,10,6) substr($(NF-1),25,6)}}' {input} | sort --parallel={threads} --temporary-directory={tmp}  | uniq -c | sort -nr   > {output} 
+        """
+
+rule find_right_barcodes: # mismatch correction for each barcode
+    input: "02_barcode_info/{sample}_raw_barcode_count.txt"
+    output: sum = "02_barcode_info/{sample}.barcode_final_summary",
+            map = "02_barcode_info/{sample}.barcode_final_map",
+            log = "02_barcode_info/{sample}.barcode_log"
+    script:
+        "script/barcode_hash_v2.py"
+
+
+rule read1_barcode_correction:
+    input :
+        "00_raw_fq_update/{sample}_cut_tso2_polyA_truseq_L001_R1_001.fastq",
+        "00_raw_fq_update/{sample}_cut_tso2_polyA_truseq_L001_R2_001.fastq",
+        "02_barcode_info/{sample}.barcode_final_map"
+    output :
+        "03_corrected_fq/{sample}_L001_R1_001.fastq",
+        "03_corrected_fq/{sample}_L001_R2_001.fastq"
+    log: "00_log/{sample}_L001_R1_corrected.log"
+    script:
+        "script/fq_barcode_correction_R1.py"
+
+
+rule r1_zip:
+    input  : "03_corrected_fq/{sample}_L001_R1_001.fastq"
+    output : "03_corrected_fq/{sample}_L001_R1_001.fastq.gz"
+    threads: 11
+    shell:
+        "pigz -p {threads} {input}"
+
+rule r2_zip:
+    input  : "03_corrected_fq/{sample}_L001_R2_001.fastq"
+    output : "03_corrected_fq/{sample}_L001_R2_001.fastq.gz"
+    threads: 11
+    shell:
+        "pigz -p {threads} {input}"
