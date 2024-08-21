@@ -79,7 +79,7 @@ pigz -p 8 cluster${i}_R2.fastq
 done  
 ```
   
-#### 5. The output file (cluster${i}_R*.fastq.gz) as pseudo-bulk fastq files were used for running nf-core/hicar (https://github.com/nf-core/hicar)
+#### 5. The output file (cluster${i}_R*.fastq.gz) as pseudo-bulk fastq files were used for running nf-core/hicar (https://github.com/jianhong/hicar/tree/dev2rc)
 ```bash
 nextflow pull jianhong/hicar -r dev2rc #dev2rc is the newest version  
   
