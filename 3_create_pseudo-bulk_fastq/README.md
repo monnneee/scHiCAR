@@ -1,4 +1,8 @@
 <mark>**This pipeline was used for generating pseudo-bulk fastq files by extracting DNA reads from the same clusters or cell types that identidied by scHiCAR RNA library\.**</mark>
+
+To run this pipeline, you need to install the following software:
+- **seqtk**: [install](https://github.com/lh3/seqtk)
+- **nextflow**: [install](https://www.nextflow.io/docs/latest/install.html)
   
 #### 1. extract DNA barcodes for each sample
 ```bash
