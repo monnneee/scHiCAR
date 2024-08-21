@@ -3,7 +3,7 @@
 
 ### Tools requirement
 
-- **Python**: python3.9 or above
+- **Python**: python3.7 or later
 - **snakemake**:  `pip install snakemake==5.13.0`
 - **cutadapt**: `pip install cutadapt==3.3`
 - **STAR**: [v2.7.5c](https://github.com/alexdobin/STAR/releases/tag/2.7.5c)
