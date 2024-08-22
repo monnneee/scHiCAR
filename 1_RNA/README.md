@@ -21,3 +21,5 @@ Your_folder
 ### 3. run the pipeline
 
 `snakemake --latency-wait 60 -p -j 99 --cluster-config cluster.json --cluster "sbatch -p common,scavenger -J {cluster.job} --mem={cluster.mem} -N 1 -n {threads} -o {cluster.out} -e {cluster.err} " &> log &`
+
+### 4. align reads to genome and generate filtered matrix (`barcodes.tsv`, `features.tsv`, and `matrix.mtx`) for use in standard scRNA-seq downstream analysis (such as [Seurat](https://satijalab.org/seurat/articles/pbmc3k_tutorial)).
