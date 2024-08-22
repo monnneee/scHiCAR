@@ -14,15 +14,15 @@ Your_folder
     ├── fq_barcode_correction_R1.py
 ```
 
-### 2.create samples.json file
+### 2.Create samples.json file
 
 `python3 sample2json.py --fastq_dir fq`
 
-### 3. run the pipeline
+### 3. Run the pipeline
 
 `snakemake --latency-wait 60 -p -j 99 --cluster-config cluster.json --cluster "sbatch -p common,scavenger -J {cluster.job} --mem={cluster.mem} -N 1 -n {threads} -o {cluster.out} -e {cluster.err} " &> log &`
 
-### 4. align reads to the genome and generate a filtered matrix folder that includes the files `barcodes.tsv`, `features.tsv`, and `matrix.mtx`,which can be used in standard scRNA-seq downstream analysis (such as with [Seurat](https://satijalab.org/seurat/articles/pbmc3k_tutorial)).
+### 4. Align reads to the genome and generate a filtered matrix folder that includes the files `barcodes.tsv`, `features.tsv`, and `matrix.mtx`
 ```
 STAR --runMode alignReads --genomeDir ./GRCm38_STAR_2.7.6a --runThreadN 12 \
 --outFileNamePrefix RNA_example --outSAMtype BAM SortedByCoordinate \
@@ -35,3 +35,4 @@ STAR --runMode alignReads --genomeDir ./GRCm38_STAR_2.7.6a --runThreadN 12 \
 --readFilesCommand zcat --genomeSAindexNbases 2 --soloBarcodeReadLength 0 \
 --soloCellFilter EmptyDrops_CR > Result/Log/sciHiCAR-RNA-2-230124-230303_L001_STAR.log 2>&1
 ```
+The output **filtered_matrix** folder can be used in standard scRNA-seq downstream analysis (such as with [Seurat](https://satijalab.org/seurat/articles/pbmc3k_tutorial)).
