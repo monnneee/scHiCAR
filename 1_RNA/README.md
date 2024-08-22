@@ -23,8 +23,8 @@ Your_folder
 `snakemake --latency-wait 60 -p -j 99 --cluster-config cluster.json --cluster "sbatch -p common,scavenger -J {cluster.job} --mem={cluster.mem} -N 1 -n {threads} -o {cluster.out} -e {cluster.err} " &> log &`
 
 ### 4. align reads to the genome and generate a filtered matrix folder that includes the files `barcodes.tsv`, `features.tsv`, and `matrix.mtx`,which can be used in standard scRNA-seq downstream analysis (such as with [Seurat](https://satijalab.org/seurat/articles/pbmc3k_tutorial)).
-
-·STAR --runMode alignReads --genomeDir ./GRCm38_STAR_2.7.6a --runThreadN 12 \
+```
+STAR --runMode alignReads --genomeDir ./GRCm38_STAR_2.7.6a --runThreadN 12 \
 --outFileNamePrefix RNA_example --outSAMtype BAM SortedByCoordinate \
 --outSAMattributes NH HI nM AS CR UR CB UB GX GN sS sQ sM --soloType CB_UMI_Simple \
 --soloFeatures GeneFull --soloCBwhitelist linear_sciRNA_18bp_barcode.txt \
@@ -33,4 +33,5 @@ Your_folder
 --soloUMIfiltering - \
 --readFilesIn snakemake_output/03_corrected_fq/RNA_example_L001_R2_001.fastq.gz snakemake_output/03_corrected_fq/RNA_example_L001_R1_001.fastq.gz \
 --readFilesCommand zcat --genomeSAindexNbases 2 --soloBarcodeReadLength 0 \
---soloCellFilter EmptyDrops_CR > Result/Log/sciHiCAR-RNA-2-230124-230303_L001_STAR.log 2>&1`
+--soloCellFilter EmptyDrops_CR > Result/Log/sciHiCAR-RNA-2-230124-230303_L001_STAR.log 2>&1
+```
