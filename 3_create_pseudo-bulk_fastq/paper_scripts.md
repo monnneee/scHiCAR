@@ -56,6 +56,7 @@ pairtools restrict \
         Astrocyte.selected.pairs.gz
 ```
 #### 5. remove PETs with mapped to the same digestion fragment，flip, and deduplicate the rest PETs
+```
 pairtools select \
         "(COLS[-6]==COLS[-3]) and (chrom1==chrom2)" \
         -o Astrocyte.selected.pairs.gz \
@@ -82,7 +83,7 @@ pairtools dedup \
         Astrocyte.sorted.pairs.gz
 
 pairix Astrocyte.dedup.pairs.gz #generate index file *.px2
-
+```
 ### 6. aggregate PETs into contact matrix in the cooler format (10kb resolution)
 ```
 cooler cload \
