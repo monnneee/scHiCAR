@@ -17,7 +17,7 @@ done
 cat sample*_RNA_DNA.barcode > total_RNA_DNA_barcode.txt # merge the total samples together that are used in the 'dna_barcode.R' script  
 
 ```
-##### add DNA barcodes to seurat object
+##### Add DNA barcodes to seurat object
 ```r
 library(Seurat)
 rna_seurat_object<-readRDS("rna_seurat.rds")
@@ -30,7 +30,7 @@ rna_filtered_object$temp<-NULL
 rna_filtered_object <- AddMetaData(object = rna_filtered_object, metadata = dna_bd,col.name = 'dna_barcode')
 ```
 
-##### extract DNA barcodes after identified clusters or annotated cell types:
+##### Extract DNA barcodes after identified clusters or annotated cell types:
 ```r
 cluster<-names(table(rna_filtered_object$cluster)) #get total cluster name
 cluster_list<-as.list(cluster)
