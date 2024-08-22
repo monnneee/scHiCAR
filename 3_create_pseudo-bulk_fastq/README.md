@@ -6,6 +6,9 @@ To run this pipeline, you need to install the following software:
   
 #### 1. Extract DNA barcodes for each sample
 ```bash
+
+# This is a bash code block.
+
 for i in {1..20}  #all samples 
   
 do
@@ -17,11 +20,14 @@ done
 cat sample*_RNA_DNA.barcode > total_RNA_DNA_barcode.txt # merge the total samples together that are used in the 'dna_barcode.R' script  
 
 ```
-##### Add DNA barcodes to seurat object
+#### 2. Add DNA barcodes to the Seurat object generated from RNA library.
 ```r
+
+# This is a R code block.
+
 library(Seurat)
 rna_seurat_object<-readRDS("rna_seurat.rds")
-dna_barcode<-read.table("./total_RNA_DNA_barcode.txt",sep='\t',header=F,row.names=1) #1st column is RNA barcode and 2nd column is DNA barcode
+dna_barcode<-read.table("total_RNA_DNA_barcode.txt",sep='\t',header=F,row.names=1) #1st column is RNA barcode and 2nd column is DNA barcode
 dna_bd<-dna_barcode$V2
 names(dna_bd)<-rownames(dna_barcode)
 rna_seurat_object$temp<-names(rna_seurat_object$orig.ident)
@@ -30,8 +36,11 @@ rna_filtered_object$temp<-NULL
 rna_filtered_object <- AddMetaData(object = rna_filtered_object, metadata = dna_bd,col.name = 'dna_barcode')
 ```
 
-##### Extract DNA barcodes after identified clusters or annotated cell types:
+#### 3. Extract DNA barcodes after identified clusters or annotated cell types:
 ```r
+
+# This is a R code block.
+
 cluster<-names(table(rna_filtered_object$cluster)) #get total cluster name
 cluster_list<-as.list(cluster)
 for (i in 1:length(cluster)){
@@ -43,8 +52,11 @@ write.table(bd,paste(cluster_list[[i]],"/total_dna_barcode",sep=""),sep="\t",quo
 ```
 
 
-#### 2. Export DNA barcodes from the same cluster or cell type for each sample
+#### 4. Export DNA barcodes from the same cluster or cell type for each sample
 ```bash  
+
+# This is a bash code block.
+
 for i in {1..25} # all clusters or cell types are consistent with the "cluster_list" in "dna_barcode.R"  
   
 do
@@ -62,8 +74,11 @@ done
 done #outputs DNA barcodes for each samples in each cluster  
 ```
   
-#### 3. Extract DNA reads based on barcodes for each samples in each cluster or cell type
+#### 5. Extract DNA reads based on barcodes for each samples in each cluster or cell type
 ```bash
+
+# This is a bash code block.
+
 mkdir final_readName  
   
 for m in {1..20} # all samples  
@@ -83,8 +98,11 @@ done
 done  
 ```
   
-#### 4. Generate fastq file for each cluster or cell type
+#### 6. Generate fastq file for each cluster or cell type
 ```bash
+
+# This is a bash code block.
+
 for i in {1..25} # all clusters  
   
 do
@@ -106,8 +124,11 @@ pigz -p 8 cluster${i}_R2.fastq
 done  
 ```
   
-#### 5. The output file (cluster${i}_R*.fastq.gz) as pseudo-bulk fastq files were used for running [nf-core/hicar](https://github.com/jianhong/hicar/tree/dev2rc)
+#### 7. The output file (cluster${i}_R*.fastq.gz) as pseudo-bulk fastq files were used for running [nf-core/hicar](https://github.com/jianhong/hicar/tree/dev2rc)
 ```bash
+
+# This is a bash code block.
+
 nextflow pull jianhong/hicar -r dev2rc #dev2rc is the newest version  
   
 nextflow run jianhong/hicar -profile singularity --genome mm10 -r dev2rc --input samplesheet.csv --skip_fastqc --skip_cutadapt --outdir result --skip_interactions --skip_tads --skip_diff_analysis --skip_peak_qc --skip_igv --skip_trackhub --skip_circos --pairtools_parse_version parse2 -resume
