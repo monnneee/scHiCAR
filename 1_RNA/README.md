@@ -24,6 +24,8 @@ Your_folder
 
 ### 4. Align reads to the genome and generate a filtered matrix folder that includes the files `barcodes.tsv`, `features.tsv`, and `matrix.mtx`
 ```
+gunzip -c linear_sciRNA_18bp_barcode.txt.gz > linear_sciRNA_18bp_barcode.txt
+
 STAR --runMode alignReads \
 --genomeDir ./GRCm38_STAR_2.7.6a \
 --runThreadN 12 \
@@ -32,7 +34,7 @@ STAR --runMode alignReads \
 --outSAMattributes NH HI nM AS CR UR CB UB GX GN sS sQ sM \
 --soloType CB_UMI_Simple \
 --soloFeatures GeneFull \
---soloCBwhitelist linear_sciRNA_18bp_barcode.txt \ # gunzip linear_sciRNA_18bp_barcode.txt.gz
+--soloCBwhitelist linear_sciRNA_18bp_barcode.txt \
 --soloCBstart 1 \
 --outSAMmapqUnique 255 \
 --soloCBlen 18 \
