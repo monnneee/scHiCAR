@@ -2,6 +2,7 @@
 
 To run this pipeline, you need to install the following software:
 - **seqtk**: [install](https://github.com/lh3/seqtk)
+- **pigz**: [install](https://zlib.net/pigz/)
 - **nextflow**: [install](https://www.nextflow.io/docs/latest/install.html)
   
 #### 1. Extract DNA barcodes for each sample
