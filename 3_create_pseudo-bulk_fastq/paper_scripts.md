@@ -11,7 +11,7 @@ To run this pipeline, you need to install the following software:
 - **pairix**: [install](https://github.com/4dn-dcic/pairix)
 - **cooler**: [install](https://cooler.readthedocs.io/en/latest/quickstart.html)
 
-#### 1. align reads to genome and index the sorted BAM File
+#### 1. Align reads to genome and index the sorted BAM File
 ```
 bwa mem -SP -t 12 $BWA_INDEX Astro_R1.fastq.gz Astro_R2.fastq.gz | samtools view -bhS --threads 12 -o Astrocyte.bam -
 samtools sort -m 4915M -@ 6 -o Astrocyte.srt.bam -T Astrocyte.srt Astrocyte.bam
@@ -20,7 +20,7 @@ samtools stats --threads 1 Astrocyte.srt.bam > Astrocyte.stats # collects statis
 samtools flagstat --threads 1 Astrocyte.srt.bam > Astrocyte.flagstat #counts the number of alignments for each FLAG type (optional)
 samtools idxstats --threads 1 Astrocyte.srt.bam > Astrocyte.idxstats #reports alignment summary statistics
 ```
-#### 2. parse alignments and generate paired end tags (PETs)
+#### 2. Parse alignments and generate paired end tags (PETs)
 ```
 pairtools parse2 \
         -c genome.fa.sizes \
@@ -38,7 +38,7 @@ sort -k1,1 -k2,2n --parallel=20 -T $TMP_DIR |uniq > Astrocyte.R2.ATAC.bed
 
 macs2 callpeak --shift -75 --extsize 150 --nomodel -B --SPMR --keep-dup all --call-summits --qval 0.01 --gsize ${genome_size} --format BED --name Astrocyte --treatment Astrocyte.R2.ATAC.bed
 ```
-#### 4. generate pvalue BIGWIG file with p-value cutoff (0.01)
+#### 4. Generate pvalue BIGWIG file with p-value cutoff (0.01)
 ```
 macs2 callpeak --shift -75 --extsize 150 --nomodel -B --SPMR --keep-dup all --call-summits -p 0.01 --gsize ${genome_size} --format BED --name Astrocyte_p0.01 --treatment Astrocyte.R2.ATAC.bed
 
@@ -52,7 +52,7 @@ sort -k1,1 -k2,2n Astrocyte.pval.signal.bedgraph|grep -v chrM > Astrocyte.pval.s
 
 bedGraphToBigWig Astrocyte.pval.signal.srt.bedgraph genome.fa.sizes Astrocyte_sig.pval.signal.bigwig
 ```
-#### 4. select uniquely mapped PETs and assign CviQI restriction fragments to PETs
+#### 4. Select uniquely mapped PETs and assign CviQI restriction fragments to PETs
 ```
 pairtools select \
         "(pair_type=='UU') or (pair_type=='UR') or (pair_type=='RU')" \ #unique-unique, unique-rescued, rescued-unique
@@ -65,7 +65,7 @@ pairtools restrict \
         -o Astrocyte.restrict.pairs.gz \
         Astrocyte.selected.pairs.gz
 ```
-#### 5. remove PETs with mapped to the same digestion fragment，flip, and deduplicate the rest PETs
+#### 5. Remove PETs with mapped to the same digestion fragment，flip, and deduplicate the rest PETs
 ```
 pairtools select \
         "(COLS[-6]==COLS[-3]) and (chrom1==chrom2)" \
@@ -94,7 +94,7 @@ pairtools dedup \
 
 pairix Astrocyte.dedup.pairs.gz #generate index file *.px2
 ```
-### 6. aggregate PETs into contact matrix in the cooler format (10kb resolution)
+### 6. Aggregate PETs into contact matrix in the cooler format (10kb resolution)
 ```
 cooler cload \
         pairix --max-split 2 \
