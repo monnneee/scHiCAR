@@ -74,7 +74,7 @@ write.table(bd,paste(cluster_list[[i]],"/total_dna_barcode",sep=""),sep="\t",quo
 
 # bash code
 
-for i in {1..25} # all clusters or cell types are consistent with the "cluster_list" in "dna_barcode.R"  
+for i in {1..25} # total cluster count
   
 do
   
