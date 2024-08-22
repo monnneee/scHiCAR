@@ -1,5 +1,5 @@
-### The following scripts use astrocyte as an example cell type to show how we performed downstream analysis using pseudo-bulk FASTQ files in our paper <mark>(add link)</mark>. 
-### These scripts are adapted from the [nf-core/hicar](https://github.com/jianhong/hicar/tree/dev2rc) pipeline, with modifications: while the original nf-core pipeline only uses R2 reads from long-range (>10kb) read pairs for open chromatin peaks calling, here, we use all R2 reads for peak calling.
+### The following pipeline use astrocyte as an example cell type to show how we performed downstream analysis using pseudo-bulk FASTQ files in our paper <mark>(add link)</mark>. 
+### This pipeline is adapted from the [nf-core/hicar](https://github.com/jianhong/hicar/tree/dev2rc) pipeline, with modifications: while the original nf-core pipeline only uses R2 reads from long-range (>10kb) read pairs for open chromatin peaks calling, here, we use all R2 reads for peak calling.
 
 To run this pipeline, you need to install the following software:
 - **BWA**: [install](https://github.com/lh3/bwa)
