@@ -22,3 +22,5 @@ b. Generate a filtered list of DNA barcodes by removing background noise
 Match the ***DNA barcodes*** corresponding to the cells in each cluster or cell type identified from the RNA library. Extract reads with read names containing these DNA barcodes from the processed FASTQ files of the DNA library, and generate a new FASTQ files for each cluster or cell type.
 
 The downstream scripts for pseudo-bulk FASTQ files used in scHiCAR paper refer to the [nf-core/hicar](https://github.com/jianhong/hicar/tree/dev2rc) pipeline, the details can be found in [paper_scripts.md](https://github.com/monnneee/scHiCAR/blob/main/3_create_pseudo-bulk_fastq/paper_scripts.md)
+
+Note: the fastq.gz files that in the [GSE267126](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE267126) and [GSE267117](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE267117) were already processed with snakemake.
