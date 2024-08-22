@@ -1,6 +1,16 @@
 ### The following scripts use astrocyte as an example cell type to show how we performed downstream analysis using pseudo-bulk FASTQ files in our paper <mark>(add link)</mark>. 
 ### These scripts are adapted from the [nf-core/hicar](https://github.com/jianhong/hicar/tree/dev2rc) pipeline, with modifications: while the original nf-core pipeline only uses R2 reads from long-range (>10kb) read pairs for open chromatin peaks calling, here, we use all R2 reads for peak calling.
 
+To run this pipeline, you need to install the following software:
+- **BWA**: [install](https://github.com/lh3/bwa)
+- **samtools**: [install](http://www.htslib.org/download/)
+- **pairtools**: [install](https://pairtools.readthedocs.io/en/latest/installation.html)
+- **macs2**: [install](https://github.com/macs3-project/MACS/wiki/Install-macs2)
+- **slopBed**: [install](https://github.com/arq5x/bedtools2/releases/tag/v2.31.0)
+- **bedClip and bedGraphToBigWig**: [install](https://github.com/ENCODE-DCC/kentUtils)
+- **pairix**: [install](https://github.com/4dn-dcic/pairix)
+- **cooler**: [install](https://cooler.readthedocs.io/en/latest/quickstart.html)
+
 #### 1. align reads to genome and index the sorted BAM File
 ```
 bwa mem -SP -t 12 $BWA_INDEX Astro_R1.fastq.gz Astro_R2.fastq.gz | samtools view -bhS --threads 12 -o Astrocyte.bam -
