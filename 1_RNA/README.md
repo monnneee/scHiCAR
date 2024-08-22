@@ -24,8 +24,13 @@ Your_folder
 
 ### 4. align reads to the genome and generate a filtered matrix folder that includes the files `barcodes.tsv`, `features.tsv`, and `matrix.mtx`,which can be used in standard scRNA-seq downstream analysis (such as with [Seurat](https://satijalab.org/seurat/articles/pbmc3k_tutorial)).
 
-·STAR --runMode alignReads --genomeDir ./GRCm38_STAR_2.7.6a --runThreadN 12 --outFileNamePrefix RNA_example --outSAMtype BAM SortedByCoordinate \
---outSAMattributes NH HI nM AS CR UR CB UB GX GN sS sQ sM --soloType CB_UMI_Simple --soloFeatures GeneFull --soloCBwhitelist linear_sciRNA_18bp_barcode.txt \
---soloCBstart 1 --outSAMmapqUnique 255 --soloCBlen 18 --soloUMIstart 19 --soloUMIlen 12 --soloCBmatchWLtype Exact --soloUMIdedup 1MM_CR --soloStrand Forward \
---soloUMIfiltering - --readFilesIn snakemake_output/03_corrected_fq/RNA_example_L001_R2_001.fastq.gz snakemake_output/03_corrected_fq/RNA_example_L001_R1_001.fastq.gz \
---readFilesCommand zcat --genomeSAindexNbases 2 --soloBarcodeReadLength 0 --soloCellFilter EmptyDrops_CR > Result/Log/sciHiCAR-RNA-2-230124-230303_L001_STAR.log 2>&1`
+·STAR --runMode alignReads --genomeDir ./GRCm38_STAR_2.7.6a --runThreadN 12 \
+--outFileNamePrefix RNA_example --outSAMtype BAM SortedByCoordinate \
+--outSAMattributes NH HI nM AS CR UR CB UB GX GN sS sQ sM --soloType CB_UMI_Simple \
+--soloFeatures GeneFull --soloCBwhitelist linear_sciRNA_18bp_barcode.txt \
+--soloCBstart 1 --outSAMmapqUnique 255 --soloCBlen 18 --soloUMIstart 19 \
+--soloUMIlen 12 --soloCBmatchWLtype Exact --soloUMIdedup 1MM_CR --soloStrand Forward \
+--soloUMIfiltering - \
+--readFilesIn snakemake_output/03_corrected_fq/RNA_example_L001_R2_001.fastq.gz snakemake_output/03_corrected_fq/RNA_example_L001_R1_001.fastq.gz \
+--readFilesCommand zcat --genomeSAindexNbases 2 --soloBarcodeReadLength 0 \
+--soloCellFilter EmptyDrops_CR > Result/Log/sciHiCAR-RNA-2-230124-230303_L001_STAR.log 2>&1`
