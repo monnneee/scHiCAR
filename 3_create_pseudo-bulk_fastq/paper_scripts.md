@@ -27,7 +27,7 @@ awk '{gsub(":.*","",$4);print $0}' OFS='\t'|grep -v '!'| \
 sort -k1,1 -k2,2n --parallel=20 -T $TMP_DIR |uniq > Astrocyte.R2.ATAC.bed
 
 macs2 callpeak --shift -75 --extsize 150 --nomodel -B --SPMR --keep-dup all --call-summits --qval 0.01 --gsize ${genome_size} --format BED --name Astrocyte --treatment Astrocyte.R2.ATAC.bed
-
+```
 #### 4. generate pvalue BIGWIG file with p-value cutoff (0.01)
 ```
 macs2 callpeak --shift -75 --extsize 150 --nomodel -B --SPMR --keep-dup all --call-summits -p 0.01 --gsize ${genome_size} --format BED --name Astrocyte_p0.01 --treatment Astrocyte.R2.ATAC.bed
@@ -83,18 +83,20 @@ pairtools dedup \
 
 pairix Astrocyte.dedup.pairs.gz #generate index file *.px2
 
-### 6. aggregate PETs into contact matrix in the cooler format (5kb and 10kb resolution)
+### 6. aggregate PETs into contact matrix in the cooler format (10kb resolution)
 ```
-cooler cload \
-        pairix --max-split 2 \
-        --nproc 12 \
-        genome.fa.sizes:5000 \
-        Astrocyte.dedup.pairs.gz \
-        Astrocyte.5000.cool
 cooler cload \
         pairix --max-split 2 \
         --nproc 12 \
         genome.fa.sizes:10000 \
         Astrocyte.dedup.pairs.gz \
+        Astrocyte.10000.cool
+
+cooler balance --cis-only p 12 Astrocyte.10000.cool #balance matrix
+
+cooler zoomify \ #Generate a multi-resolution cooler file by coarsening.
+        --balance -r 10000N \
+        -n 12 \
+        -o Astrocyte.10000.mcool \
         Astrocyte.10000.cool
 ```
