@@ -4,7 +4,7 @@ To run this pipeline, you need to install the following software:
 - **seqtk**: [install](https://github.com/lh3/seqtk)
 - **nextflow**: [install](https://www.nextflow.io/docs/latest/install.html)
   
-#### 1. extract DNA barcodes for each sample
+#### 1. Extract DNA barcodes for each sample
 ```bash
 for i in {1..20}  #all samples 
   
@@ -19,7 +19,7 @@ cat sample*_RNA_DNA.barcode > total_RNA_DNA_barcode.txt # merge the total sample
 Rscript dna_barcode.R # outputs DNA barcodes for each cluster that includes mixed samples
 ```
      
-#### 2. export DNA barcodes from the same cluster or cell type for each sample
+#### 2. Export DNA barcodes from the same cluster or cell type for each sample
 ```bash  
 for i in {1..25} # all clusters or cell types are consistent with the "cluster_list" in "dna_barcode.R"  
   
@@ -38,7 +38,7 @@ done
 done #outputs DNA barcodes for each samples in each cluster  
 ```
   
-#### 3. extract DNA reads based on barcodes for each samples in each cluster or cell type
+#### 3. Extract DNA reads based on barcodes for each samples in each cluster or cell type
 ```bash
 mkdir final_readName  
   
@@ -59,7 +59,7 @@ done
 done  
 ```
   
-#### 4. generate fastq file for each cluster or cell type
+#### 4. Generate fastq file for each cluster or cell type
 ```bash
 for i in {1..25} # all clusters  
   
