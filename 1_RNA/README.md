@@ -50,4 +50,4 @@ STAR --runMode alignReads \
 --soloBarcodeReadLength 0 \
 --soloCellFilter EmptyDrops_CR > Result/Log/sciHiCAR-RNA-2-230124-230303_L001_STAR.log 2>&1
 ```
-The output **GeneFull/filtered** folder can be used in standard scRNA-seq downstream analysis (such as with [Seurat](https://satijalab.org/seurat/articles/pbmc3k_tutorial)).
+The STAR output **GeneFull/filtered** folder can be used in standard scRNA-seq downstream analysis (such as with [Seurat](https://satijalab.org/seurat/articles/pbmc3k_tutorial)).
