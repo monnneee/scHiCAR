@@ -17,10 +17,10 @@ Your_folder
     ├── raw_fq_update.py
 ```
 
-### 2.create samples.json file
+### 2.Create samples.json file
 
 `python3 sample2json.py --fastq_dir fq`
 
-### 3. run the pipeline
+### 3. Run the pipeline
 
 `snakemake --latency-wait 60 -p -j 99 --cluster-config cluster.json --cluster "sbatch -p common,scavenger -J {cluster.job} --mem={cluster.mem} -N 1 -n {threads} -o {cluster.out} -e {cluster.err} " &> log &`
