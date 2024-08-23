@@ -1,3 +1,7 @@
+BWA_INDEX: /datacommons/ydiaolab/genome_ref/mm10_BWA_index/mm10.fa
+chromsizes : /datacommons/ydiaolab/genome_ref/mm10_BWA_index/mm10.chrom.sizes
+genome: mm10
+
 SAMPLES_JSON: './samples.json'
 
 CLUSTER_JSON: './cluster.json'
