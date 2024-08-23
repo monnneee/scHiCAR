@@ -13,8 +13,10 @@ Your_folder
 │   └── DNA_example_R2_001.fastq.gz
 └── script
     ├── barcode_hash_v2.py
+    ├── extract_barcode_based_on_knee.R
     ├── fq_barcode_correction.py
     ├── raw_fq_update.py
+    ├── read_summary.R
 ```
 
 ### 2.Create samples.json file
