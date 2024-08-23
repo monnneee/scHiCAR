@@ -1,4 +1,5 @@
 ## this program will extract paired information of cells whose number are larger than knee
+#BiocManager::install("GNET2")
 library(GNET2)
 # generate empty vector based chrom.size
 print ('usage= extract_barcode_based_on_knee.R rank_file knee_ratio  cut_rank_file')
