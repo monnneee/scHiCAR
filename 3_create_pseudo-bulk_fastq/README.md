@@ -131,9 +131,9 @@ for j in {1..40}  # all samples
   
 do
   
-seqtk subseq DNA_fastq/sample${i}_R1.fastq.gz final_readName/cluster${i}_sample${j}_readName >> cluster${i}_R1.fastq  
+seqtk subseq DNA_fastq/sample${i}_R1.fastq.gz final_readName/cluster${i}_sample${j}_readName|awk 'NR%4==1 {sub(/^@/, "@'$i'")} 1' >> cluster${i}_R1.fastq  
   
-seqtk subseq DNA_fastq/sample${i}_R2.fastq.gz final_readName/cluster${i}_sample${j}_readName >> cluster${i}_R2.fastq  
+seqtk subseq DNA_fastq/sample${i}_R2.fastq.gz final_readName/cluster${i}_sample${j}_readName|awk 'NR%4==1 {sub(/^@/, "@'$i'")} 1' >> cluster${i}_R2.fastq  
   
 done  
   
