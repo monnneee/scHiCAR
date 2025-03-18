@@ -52,7 +52,7 @@ sort -k1,1 -k2,2n Astrocyte.pval.signal.bedgraph|grep -v chrM > Astrocyte.pval.s
 
 bedGraphToBigWig Astrocyte.pval.signal.srt.bedgraph genome.fa.sizes Astrocyte_sig.pval.signal.bigwig
 ```
-#### 4. Select uniquely mapped PETs and assign CviQI restriction fragments to PETs
+#### 5. Select uniquely mapped PETs and assign CviQI restriction fragments to PETs
 ```
 pairtools select \
         "(pair_type=='UU') or (pair_type=='UR') or (pair_type=='RU')" \ #unique-unique, unique-rescued, rescued-unique
@@ -65,7 +65,7 @@ pairtools restrict \
         -o Astrocyte.restrict.pairs.gz \
         Astrocyte.selected.pairs.gz
 ```
-#### 5. Remove PETs with mapped to the same digestion fragment，flip, and deduplicate the rest PETs
+#### 6. Remove PETs with mapped to the same digestion fragment，flip, and deduplicate the rest PETs
 ```
 pairtools select \
         "(COLS[-6]==COLS[-3]) and (chrom1==chrom2)" \
@@ -94,7 +94,7 @@ pairtools dedup \
 
 pairix Astrocyte.dedup.pairs.gz #generate index file *.px2
 ```
-### 6. Aggregate PETs into contact matrix in the cooler format (10kb resolution)
+### 7. Aggregate PETs into contact matrix in the cooler format (10kb resolution)
 ```
 cooler cload \
         pairix --max-split 2 \
