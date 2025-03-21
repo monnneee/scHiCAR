@@ -60,6 +60,8 @@ pairtools select \
         --output-rest Astrocyte.unselected.pairs.gz \
         Astrocyte.pairsam.gz
 
+cooler digest -o genome_CviQI.bed genome.fa.sizes genome.fa CviQI
+
 pairtools restrict \
         -f genome_CviQI.bed \
         -o Astrocyte.restrict.pairs.gz \
