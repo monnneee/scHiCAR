@@ -38,13 +38,11 @@ sort -k1,1 -k2,2n --parallel=20 -T $TMP_DIR |uniq > Astrocyte.R2.ATAC.bed
 
 macs2 callpeak --shift -75 --extsize 150 --nomodel -B --SPMR --keep-dup all --call-summits --qval 0.01 --gsize ${genome_size} --format BED --name Astrocyte --treatment Astrocyte.R2.ATAC.bed
 ```
-#### 4. Generate pvalue BIGWIG file with p-value cutoff (0.01)
+#### 4. Generate pvalue BIGWIG file for open chromatin visualization
 ```
-macs2 callpeak --shift -75 --extsize 150 --nomodel -B --SPMR --keep-dup all --call-summits -p 0.01 --gsize ${genome_size} --format BED --name Astrocyte_p0.01 --treatment Astrocyte.R2.ATAC.bed
-
 sval=$(wc -l Astrocyte.R2.ATAC.bed | awk '{printf "%f", $1/1000000}')
 
-macs2 bdgcmp -t Astrocyte_p0.01_treat_pileup.bdg -c Astrocyte_p0.01_control_lambda.bdg --o-prefix Astrocyte -m ppois -S $sval
+macs2 bdgcmp -t Astrocyte_treat_pileup.bdg -c Astrocyte_control_lambda.bdg --o-prefix Astrocyte -m ppois -S $sval
 
 slopBed -i Astrocyte_ppois.bdg -g genome.fa.sizes -b 0 | bedClip stdin genome.fa.sizes Astrocyte.pval.signal.bedgraph
 
