@@ -4,7 +4,7 @@
 To run this pipeline, you need to install the following software:
 - **BWA**: [install](https://github.com/lh3/bwa)
 - **samtools**: [install](http://www.htslib.org/download/)
-- **pairtools**: [install](https://pairtools.readthedocs.io/en/latest/installation.html)
+- **pairtools v1.0.2**: [install](https://pairtools.readthedocs.io/en/latest/installation.html)
 - **macs2**: [install](https://github.com/macs3-project/MACS/wiki/Install-macs2)
 - **slopBed**: [install](https://github.com/arq5x/bedtools2/releases/tag/v2.31.0)
 - **bedClip and bedGraphToBigWig**: [install](https://github.com/ENCODE-DCC/kentUtils)
