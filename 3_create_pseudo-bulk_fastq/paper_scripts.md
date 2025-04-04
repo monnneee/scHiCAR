@@ -111,4 +111,4 @@ cooler zoomify \ #Generate a multi-resolution cooler file by coarsening.
         -o Astrocyte.10000.mcool \
         Astrocyte.10000.cool
 ```
-The *.cool file was used to call interaction peak with [Peakachu](https://github.com/tariks/peakachu). The *.mcool was used to visualization with [Higlass](https://github.com/higlass/higlass)
+The *.cool file was used to call interaction peak with [scDeepLUCIA](https://github.com/DiaoLab/scDeepLUCIA) or [Peakachu](https://github.com/tariks/peakachu). The *.mcool was used to visualization with [Higlass](https://github.com/higlass/higlass)
