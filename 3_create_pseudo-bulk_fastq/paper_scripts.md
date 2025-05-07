@@ -28,7 +28,7 @@ pairtools parse2 \
         --add-pair-index --no-flip --drop-seq --expand --max-expansion-depth 6 \
         --output-stats Astrocyte.pairsam.stat \
         -o Astrocyte.pairsam.gz \
-        Astrocyte.bam
+        Astrocyte.bam # not Astrocyte.srt.bam
 ```
 #### 3. Extract read2 from PETs to call open chromatin peaks with q-value cutoff (0.01)
 ```
