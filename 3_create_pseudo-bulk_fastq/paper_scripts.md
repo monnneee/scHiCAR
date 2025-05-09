@@ -96,13 +96,11 @@ pairix Astrocyte.dedup.pairs.gz #generate index file *.px2
 ```
 ### 7. Aggregate PETs into contact matrix in the cooler format (10kb resolution)
 ```
-cooler csort -c1 2 -c2 4 -p1 3 -p2 5 -p 12 Astrocyte.dedup.pairs.gz genome.fa.sizes
-
 cooler cload \
         pairix --max-split 2 \
         --nproc 12 \
         genome.fa.sizes:10000 \
-        Astrocyte.dedup.pairs.blksrt.gz \
+        Astrocyte.dedup.pairs.gz \
         Astrocyte.10000.cool
 
 cooler balance --cis-only p 12 Astrocyte.10000.cool #balance matrix
