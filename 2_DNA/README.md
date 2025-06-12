@@ -5,7 +5,6 @@ Your_folder
 ├── Snakefile
 ├── cluster.json
 ├── sample2json.py
-├── sample2json.py
 ├── scHiCAR_DNA_18bp_barcode.txt.gz
 ├── fq  # move your raw fastq files to this folder
 │   ├── DNA_example_R1_001.fastq.gz
