@@ -2,10 +2,10 @@
 ```
 Your_folder
 ├── cluster.json
-├── config.yaml
 ├── sample2json.py
-├── linear_sciRNA_18bp_barcode.txt.gz
+├── sciHiCAR_RNA_18bp_barcode.txt.gz
 ├── Snakefile
+├── ME_index
 ├── fq  # move your raw fastq files to this folder
 │   ├── RNA_example_R1_001.fastq.gz
 │   └── RNA_example_R2_001.fastq.gz
@@ -20,7 +20,7 @@ Your_folder
 
 ### 3. Run snakemake pipeline
 
-`snakemake --latency-wait 60 -p -j 99 --cluster-config cluster.json --cluster "sbatch -p common,scavenger -J {cluster.job} --mem={cluster.mem} -N 1 -n {threads} -o {cluster.out} -e {cluster.err} " &> log &`
+`snakemake --latency-wait 60 -p -j 99 --cluster-config cluster.json --cluster "sbatch -p common -J {cluster.job} --mem={cluster.mem} -N 1 -n {threads} -o {cluster.out} -e {cluster.err} " &> log & #customize -p as needed based on your HPC environment`
 
 ### 4. Align reads to the genome and generate a filtered matrix folder that includes the files `barcodes.tsv`, `features.tsv`, and `matrix.mtx`
 ```
