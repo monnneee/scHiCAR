@@ -24,7 +24,7 @@ The resulting files (`03_corrected_fq/*_all_*.fastq.gz`) are ready for alignment
 
 #### 1.2. Generate filtered gene expression matrices (`barcodes.tsv`, `features.tsv`, and `matrix.mtx`) with STAR.
 
-### 2. Process raw FASTQ files of the DNA library, and generate ATAC fragment files and chromatin contact pair files with Snakemake ([code](https://github.com/monnneee/scHiCAR/tree/v2/2_DNA))
+### 2. Process raw FASTQ files of the DNA library with Snakemake ([code](https://github.com/monnneee/scHiCAR/tree/v2/2_DNA))
 
 #### 2.1. Process raw FASTQ files:
 - Trim specific sequences at the 5′ end of both Read 1 and Read 2.  
@@ -37,8 +37,8 @@ The resulting files (`03_corrected_fq/*_all_*.fastq.gz`) are ready for alignment
 
 The resulting files (`05_cutME_fq/*_cutME_*.fastq.gz`) are ready for generating ATAC fragment files and chromatin contact pair files.
 
-#### 2.2. Generate ATAC fragment files (`*.tsv.gz`)
+### 3. Generate ATAC fragment files with Snakemake (`*.tsv.gz`)([code](https://github.com/monnneee/scHiCAR/tree/v2/))
 
-#### 2.3. Generate chromatin contact pair files (`*.dedup.pairs.gz`)
+### 4. Generate chromatin contact pair files with Snakemake (`*.dedup.pairs.gz`)([code](https://github.com/monnneee/scHiCAR/tree/v2/))
 
-### 3. Downsteam pseudo-bulk / single-cell analysis ([code](https://github.com/monnneee/scHiCAR/tree/v2/))
+### 5. Downsteam pseudo-bulk / single-cell analysis ([code](https://github.com/monnneee/scHiCAR/tree/v2/))
