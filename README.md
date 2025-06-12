@@ -26,7 +26,7 @@ The resulting files (`03_corrected_fq/*_all_*.fastq.gz`) are ready for alignment
 
 ### 2. Process raw FASTQ files of the DNA library with Snakemake ([code](https://github.com/monnneee/scHiCAR/tree/v2/2_DNA))
 
-#### 2.1. Process raw FASTQ files:
+#### Snakemake procedures:
 - Trim specific sequences at the 5′ end of both Read 1 and Read 2.  
 - Extract barcodes from the read sequences and append them to the read names following the `@` symbol.  
 - Generate a list of all extracted barcodes and count their occurrences.  
