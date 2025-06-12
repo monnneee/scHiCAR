@@ -27,7 +27,7 @@ Your_folder
 gunzip -c sciHiCAR_RNA_18bp_barcode.txt.gz > sciHiCAR_RNA_18bp_barcode.txt
 
 STAR --runMode alignReads \
---genomeDir ./GRCm38_STAR_2.7.6a \
+--genomeDir PATH_TO_STAR_INDEX_folder \
 --runThreadN 12 \
 --outFileNamePrefix RNA_example \
 --outSAMtype BAM SortedByCoordinate \
@@ -39,15 +39,16 @@ STAR --runMode alignReads \
 --outSAMmapqUnique 255 \
 --soloCBlen 18 \
 --soloUMIstart 19 \
---soloUMIlen 12 \
+--soloUMIlen 16 \
 --soloCBmatchWLtype Exact \
 --soloUMIdedup 1MM_CR \
 --soloStrand Forward \
 --soloUMIfiltering - \
---readFilesIn snakemake_output/03_corrected_fq/RNA_example_L001_R2_001.fastq.gz snakemake_output/03_corrected_fq/RNA_example_L001_R1_001.fastq.gz \
+--readFilesIn snakemake_output/03_corrected_fq/RNA_example_all_L001_R2_001.fastq.gz snakemake_output/03_corrected_fq/RNA_example_all_L001_R1_001.fastq.gz \
 --readFilesCommand zcat \
 --genomeSAindexNbases 2 \
 --soloBarcodeReadLength 0 \
---soloCellFilter EmptyDrops_CR > Result/Log/sciHiCAR-RNA-2-230124-230303_L001_STAR.log 2>&1
+--soloCellFilter EmptyDrops_CR
+--limitBAMsortRAM 200000000000 > log 2>&1 &
 ```
 The STAR output **GeneFull/filtered** folder can be used in standard scRNA-seq downstream analysis (such as with [Seurat](https://satijalab.org/seurat/articles/pbmc3k_tutorial)).
