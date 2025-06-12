@@ -24,10 +24,22 @@ The resulting files (`03_corrected_fq/*_all_*.fastq.gz`) are ready for alignment
 
 #### 1.2. Generate filtered gene expression matrices (`barcodes.tsv`, `features.tsv`, and `matrix.mtx`) using STAR, suitable for downstream scRNA-seq clustering analysis.
 
-### 2. Process raw FASTQ files of DNA library with Snakemake ([2_DNA](https://github.com/monnneee/scHiCAR/tree/main/2_DNA))
-a. Extract ***DNA barcodes*** from the read sequence and add them to the read name. Remove the adaptors from the read sequence. If a read sequence does not contain any DNA barcodes, remove the entire read.
+### 2. Process raw FASTQ files of the DNA library, and generate ATAC fragment files and chromatin contact pair files with Snakemake ([2_DNA](https://github.com/monnneee/scHiCAR/tree/v2/2_DNA))
 
-b. Generate a filtered list of DNA barcodes by removing background noise
+#### 2.1. Snakemake procedures:
+- Trim specific sequences at the 5′ end of both Read 1 and Read 2.  
+- Extract barcodes from the read sequences and append them to the read names following the `@` symbol.  
+- Generate a list of all extracted barcodes and count their occurrences.  
+- Compare extracted barcodes against a provided whitelist.  
+- Correct barcodes that have only one mismatch relative to the whitelist.  
+- Compress the filtered FASTQ files.  
+- Remove ME (molecular end) sequences from the reads.  
+
+The resulting files (`05_cutME_fq/*_cutME_*.fastq.gz`) are ready for generating ATAC fragment files and chromatin contact pair files.
+
+#### 2.2. Generate ATAC fragment files (`*.tsv.gz`)
+
+#### 2.3. Generate chromatin contact pair files (`*.dedup.pairs.gz`)
 
 ### 3. Generate pseudo-bulk FASTQ files of DNA library ([3_create_pseudo-bulk_fastq](https://github.com/monnneee/scHiCAR/tree/main/3_create_pseudo-bulk_fastq))
 Match the ***DNA barcodes*** corresponding to the cells in each cluster or cell type identified from the RNA library. Extract reads with read names containing these DNA barcodes from the processed FASTQ files of the DNA library, and generate a new FASTQ files for each cluster or cell type.
