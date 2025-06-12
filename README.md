@@ -8,7 +8,7 @@
 - **cutadapt**: `pip install cutadapt==3.3`
 - **STAR**: [v2.7.5c](https://github.com/alexdobin/STAR/releases/tag/2.7.5c)
 
-### 1. Process RNA FASTQ files with Snakemake and align sequences to the genome ([1_RNA](https://github.com/monnneee/scHiCAR/tree/v2/1_RNA))
+### 1. Process RNA FASTQ files with Snakemake and align sequences to the genome ([code](https://github.com/monnneee/scHiCAR/tree/v2/1_RNA))
 
 #### 1.1. Snakemake procedures:
 - Trim specific sequences at the 5′ end of Read 1.  
@@ -24,9 +24,9 @@ The resulting files (`03_corrected_fq/*_all_*.fastq.gz`) are ready for alignment
 
 #### 1.2. Generate filtered gene expression matrices (`barcodes.tsv`, `features.tsv`, and `matrix.mtx`) using STAR, suitable for downstream scRNA-seq clustering analysis.
 
-### 2. Process raw FASTQ files of the DNA library, and generate ATAC fragment files and chromatin contact pair files with Snakemake ([2_DNA](https://github.com/monnneee/scHiCAR/tree/v2/2_DNA))
+### 2. Process raw FASTQ files of the DNA library, and generate ATAC fragment files and chromatin contact pair files with Snakemake ([code](https://github.com/monnneee/scHiCAR/tree/v2/2_DNA))
 
-#### 2.1. Snakemake procedures:
+#### 2.1. Process raw FASTQ files:
 - Trim specific sequences at the 5′ end of both Read 1 and Read 2.  
 - Extract barcodes from the read sequences and append them to the read names following the `@` symbol.  
 - Generate a list of all extracted barcodes and count their occurrences.  
