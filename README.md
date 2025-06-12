@@ -6,14 +6,25 @@
 - **Python**: python3.7 or later
 - **snakemake**:  `pip install snakemake==5.13.0`
 - **cutadapt**: `pip install cutadapt==3.3`
-- **STAR**: [v2.7.5c](https://github.com/alexdobin/STAR/releases/tag/2.7.5c)
+- **STAR**: [v2.7.10a](https://github.com/alexdobin/STAR/releases/tag/2.7.10a)
 
-### 1. Process FASTQ files of RNA library with Snakemake ([1_RNA](https://github.com/monnneee/scHiCAR/tree/main/1_RNA))
-a. Extract ***RNA barcodes*** from the read sequence and add them to the beginning of read 1 (*_R1_001.fastq). Remove the adaptors from the read sequence. If a read sequence does not contain any RNA barcodes, remove the entire read.
+### 1. Process RNA FASTQ files with Snakemake and align sequences to the genome ([1_RNA](https://github.com/monnneee/scHiCAR/tree/v2/1_RNA))
 
-b. generate filtered matrix (`barcodes.tsv`, `features.tsv`, and `matrix.mtx`) for use in standard scRNA-seq downstream analysis.
+a. Snakemake procedures:
+- Trim specific sequences at the 5′ end of Read 1.  
+- Extract RNA barcodes from Read 1 and append them to its 5′ end.  
+- Remove the template-switching oligo (TSO) from the 5′ end of Read 2.  
+- Remove poly(A) tails and adaptor sequences from the 3′ end of Read 2.  
+- Split FASTQ files into two subsets based on priming strategy: oligo-dT vs. random hexamer.  
+- Extract and count all barcodes from the dataset.  
+- Compare extracted barcodes against a provided whitelist and correct those with a single mismatch.  
+- Compress and merge filtered FASTQ files from the two primer strategies.
 
-### 2. Process FASTQ files of DNA library with Snakemake ([2_DNA](https://github.com/monnneee/scHiCAR/tree/main/2_DNA))
+The resulting files (`03_corrected_fq/*_all_*.fastq.gz`) are ready for alignment using STAR.
+
+b. Generate filtered gene expression matrices (`barcodes.tsv`, `features.tsv`, and `matrix.mtx`) using STAR, suitable for downstream scRNA-seq analysis.
+
+### 2. Process raw FASTQ files of DNA library with Snakemake ([2_DNA](https://github.com/monnneee/scHiCAR/tree/main/2_DNA))
 a. Extract ***DNA barcodes*** from the read sequence and add them to the read name. Remove the adaptors from the read sequence. If a read sequence does not contain any DNA barcodes, remove the entire read.
 
 b. Generate a filtered list of DNA barcodes by removing background noise
