@@ -1,0 +1,105 @@
+shell.prefix("set -eo pipefail; echo BEGIN at $(date); ")
+shell.suffix("; exitstat=$?; echo END at $(date); echo exit status was $exitstat; exit $exitstat")
+import collections
+
+FILES = json.load(open('samples.json')) ##  fastq for each lane
+SAMPLES = sorted(FILES.keys())
+
+TARGETS = []
+tmp='./tmp'
+
+TARGETS.extend(expand("05_cutME_fq/{sample}_cutME_L001_R2_001.fastq.gz",sample = SAMPLES ))
+
+localrules: targetfiles
+rule targetfiles:
+    input: TARGETS
+
+## trim specific sequence in the 5 end of read1 and read2
+rule cut_specific_sequences:
+    input:
+        r1 = lambda wildcards: FILES[wildcards.sample]['R1'],
+        r2 = lambda wildcards: FILES[wildcards.sample]['R2']
+    output:
+        r1 = "01_trim_fq/{sample}_cut_adapt3_L001_R1_001.fastq.gz",
+        r2 = "01_trim_fq/{sample}_cut_adapt3_L001_R2_001.fastq.gz"
+    threads: 11
+    shell:
+        """
+        cutadapt -j {threads} -e 0.15 --action=retain --discard-untrimmed  -g 'NNNNNNATCCACGTGCTTGAGAGGCCAGAGCATTCG;min_overlap=30' -G 'NNNNNNNNNNNNNNGTCATAGCTGTTTCCTGTA;min_overlap=19' -o {output[0]} -p {output[1]} {input[0]} {input[1]}
+        """
+
+
+## extract the barcodes from sequence and append them to the read names following the '@' symbol
+rule move_barcode_to_readName:
+    input:
+        r1 = "01_trim_fq/{sample}_cut_adapt3_L001_R1_001.fastq.gz",
+        r2 = "01_trim_fq/{sample}_cut_adapt3_L001_R2_001.fastq.gz"
+    output: 
+        r1 = "02_modify_read_name/{sample}_index_L001_R1_001.fastq",
+        r2 = "02_modify_read_name/{sample}_index_L001_R2_001.fastq"
+    script:
+        "script/raw_fq_update.py"
+
+## extract total barcodes list, count each barcode
+rule barcode_QC:
+    input: "02_modify_read_name/{sample}_index_L001_R1_001.fastq"
+    output: "03_barcode_info/{sample}_raw_barcode_count.txt"
+    threads: 8 
+    shell:
+        """
+        mkdir ./tmp
+        awk  '{{if(NR%4==1) print substr($0,2,18)}}' {input} | sort --parallel={threads} --temporary-directory={tmp} | uniq -c | sort -nr   > {output} 
+        """
+
+## compare the extracted barcodes with the whitelist
+rule compare_barcodes_with_whitelist:
+    input: "03_barcode_info/{sample}_raw_barcode_count.txt"
+    output: sum = "03_barcode_info/{sample}.barcode_final_summary",
+            map = "03_barcode_info/{sample}.barcode_final_map",
+            log = "03_barcode_info/{sample}.barcode_log"
+    script:
+        "script/barcode_hash_v2_ME.py"
+
+## correct the barcode which barcode only have one mismatch
+rule barcode_correction:
+    input :
+        "02_modify_read_name/{sample}_index_L001_R1_001.fastq",
+        "02_modify_read_name/{sample}_index_L001_R2_001.fastq",
+        "03_barcode_info/{sample}.barcode_final_map"
+    output :
+        "04_corrected_barcode/{sample}_L001_R1_001.fastq",
+        "04_corrected_barcode/{sample}_L001_R2_001.fastq"
+    log: "00_log/{sample}_L001_R1_corrected.log"
+    script:
+        "script/fq_barcode_correction_R1_ME.py"
+
+## compress fastq file
+rule compress_R1:
+    input  : "04_corrected_barcode/{sample}_L001_R1_001.fastq"
+    output : "04_corrected_barcode/{sample}_L001_R1_001.fastq.gz"
+    threads: 11
+    shell:
+        "pigz -p {threads} {input}"
+
+rule compress_R2:
+    input  : "04_corrected_barcode/{sample}_L001_R2_001.fastq"
+    output : "04_corrected_barcode/{sample}_L001_R2_001.fastq.gz"
+    threads: 11
+    shell:
+        "pigz -p {threads} {input}"
+
+## remove the ME sequence in the fastq file
+rule remove_ME:
+    input:
+        "04_corrected_barcode/{sample}_L001_R1_001.fastq.gz",
+        "04_corrected_barcode/{sample}_L001_R2_001.fastq.gz"
+    output:
+        "05_cutME_fq/{sample}_cutME_L001_R1_001.fastq.gz",
+        "05_cutME_fq/{sample}_cutME_L001_R2_001.fastq.gz"
+    threads: 11
+    shell:
+        "cutadapt -Z -j {threads} -e 0.2  -g file:ME_index\
+        -o 05_cutME_fq/{wildcards.sample}_cut{{name}}_L001_R1_001.fastq.gz \
+        -p 05_cutME_fq/{wildcards.sample}_cut{{name}}_L001_R2_001.fastq.gz \
+        {input[0]} {input[1]}"
+
