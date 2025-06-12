@@ -10,7 +10,7 @@
 
 ### 1. Process RNA FASTQ files with Snakemake and align sequences to the genome ([1_RNA](https://github.com/monnneee/scHiCAR/tree/v2/1_RNA))
 
-##### 1.1. Snakemake procedures:
+#### 1.1. Snakemake procedures:
 - Trim specific sequences at the 5′ end of Read 1.  
 - Extract RNA barcodes from Read 1 and append them to its 5′ end.  
 - Remove the template-switching oligo (TSO) from the 5′ end of Read 2.  
@@ -22,7 +22,7 @@
 
 The resulting files (`03_corrected_fq/*_all_*.fastq.gz`) are ready for alignment using STAR.
 
-##### 1.2. Generate filtered gene expression matrices (`barcodes.tsv`, `features.tsv`, and `matrix.mtx`) using STAR, suitable for downstream scRNA-seq clustering analysis.
+#### 1.2. Generate filtered gene expression matrices (`barcodes.tsv`, `features.tsv`, and `matrix.mtx`) using STAR, suitable for downstream scRNA-seq clustering analysis.
 
 ### 2. Process raw FASTQ files of DNA library with Snakemake ([2_DNA](https://github.com/monnneee/scHiCAR/tree/main/2_DNA))
 a. Extract ***DNA barcodes*** from the read sequence and add them to the read name. Remove the adaptors from the read sequence. If a read sequence does not contain any DNA barcodes, remove the entire read.
