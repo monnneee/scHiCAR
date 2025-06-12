@@ -18,9 +18,9 @@ Your_folder
 
 `python3 sample2json.py --fastq_dir fq`
 
-### 3. Run snakemake pipeline
+### 3. Run snakemake pipeline （customize -p as needed based on your HPC environment）
 
-`snakemake --latency-wait 60 -p -j 99 --cluster-config cluster.json --cluster "sbatch -p common -J {cluster.job} --mem={cluster.mem} -N 1 -n {threads} -o {cluster.out} -e {cluster.err} " &> log & #customize -p as needed based on your HPC environment`
+`snakemake --latency-wait 60 -p -j 99 --cluster-config cluster.json --cluster "sbatch -p common -J {cluster.job} --mem={cluster.mem} -N 1 -n {threads} -o {cluster.out} -e {cluster.err} " &> log &`
 
 ### 4. Align reads to the genome and generate a filtered matrix folder that includes the files `barcodes.tsv`, `features.tsv`, and `matrix.mtx`
 ```
