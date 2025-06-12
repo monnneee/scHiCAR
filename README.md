@@ -22,7 +22,7 @@
 
 The resulting files (`03_corrected_fq/*_all_*.fastq.gz`) are ready for alignment using STAR.
 
-#### 1.2. Generate filtered gene expression matrices (`barcodes.tsv`, `features.tsv`, and `matrix.mtx`) using STAR, suitable for downstream scRNA-seq clustering analysis.
+#### 1.2. Generate filtered gene expression matrices (`barcodes.tsv`, `features.tsv`, and `matrix.mtx`) using STAR.
 
 ### 2. Process raw FASTQ files of the DNA library, and generate ATAC fragment files and chromatin contact pair files with Snakemake ([code](https://github.com/monnneee/scHiCAR/tree/v2/2_DNA))
 
