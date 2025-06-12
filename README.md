@@ -15,9 +15,9 @@
 - Extract RNA barcodes from Read 1 and append them to its 5′ end.  
 - Remove the template-switching oligo (TSO) from the 5′ end of Read 2.  
 - Remove poly(A) tails and adaptor sequences from the 3′ end of Read 2.  
-- Split FASTQ files into two subsets based on priming strategy: oligo-dT vs. random hexamer.  
+- Split FASTQ files into two subsets based on primer strategy: oligo-dT vs. random hexamer.  
 - Extract and count all barcodes from the dataset.  
-- Compare extracted barcodes against a provided whitelist and correct those with a single mismatch.  
+- Correct barcodes that have only one mismatch relative to the whitelist.  
 - Compress and merge filtered FASTQ files from the two primer strategies.
 
 The resulting files (`03_corrected_fq/*_all_*.fastq.gz`) are ready for alignment using STAR.
@@ -33,7 +33,7 @@ The resulting files (`03_corrected_fq/*_all_*.fastq.gz`) are ready for alignment
 - Compare extracted barcodes against a provided whitelist.  
 - Correct barcodes that have only one mismatch relative to the whitelist.  
 - Compress the filtered FASTQ files.  
-- Remove ME (molecular end) sequences from the reads.  
+- Remove ME (mosaic end) sequences from the reads.  
 
 The resulting files (`05_cutME_fq/*_cutME_*.fastq.gz`) are ready for generating ATAC fragment files and chromatin contact pair files.
 
