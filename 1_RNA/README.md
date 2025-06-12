@@ -44,7 +44,7 @@ STAR --runMode alignReads \
 --soloUMIdedup 1MM_CR \
 --soloStrand Forward \
 --soloUMIfiltering - \
---readFilesIn snakemake_output/03_corrected_fq/RNA_example_all_L001_R2_001.fastq.gz snakemake_output/03_corrected_fq/RNA_example_all_L001_R1_001.fastq.gz \
+--readFilesIn 03_corrected_fq/RNA_example_all_L001_R2_001.fastq.gz 03_corrected_fq/RNA_example_all_L001_R1_001.fastq.gz \
 --readFilesCommand zcat \
 --genomeSAindexNbases 2 \
 --soloBarcodeReadLength 0 \
