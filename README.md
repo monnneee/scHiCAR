@@ -8,7 +8,7 @@
 - **cutadapt**: `pip install cutadapt==3.3`
 - **STAR**: [v2.7.5c](https://github.com/alexdobin/STAR/releases/tag/2.7.5c)
 
-### 1. Process RNA FASTQ files with Snakemake and align sequences to the genome ([code](https://github.com/monnneee/scHiCAR/tree/v2/1_RNA))
+### 1. Process raw FASTQ files of the RNA library with Snakemake and align sequences to the genome ([code](https://github.com/monnneee/scHiCAR/tree/v2/1_RNA))
 
 #### 1.1. Snakemake procedures:
 - Trim specific sequences at the 5′ end of Read 1.  
