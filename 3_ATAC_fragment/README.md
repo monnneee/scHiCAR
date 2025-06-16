@@ -19,3 +19,5 @@ Your_folder
 ### 3. Run snakemake pipeline (customize -p as needed based on your HPC environment)
 
 `snakemake --latency-wait 60 -p -j 99 --cluster-config cluster.json --cluster "sbatch -p common -J {cluster.job} --mem={cluster.mem} -N 1 -n {threads} -o {cluster.out} -e {cluster.err} " &> log &`
+
+The output **02_fragment/{sample}.tsv.gz** files can be used in standard scATAC-seq downstream analysis (such as with [ArchR](https://www.archrproject.com/bookdown/creating-arrow-files.html)).
