@@ -2,23 +2,19 @@
 ### 1. Download all the files to your folder
 ```
 Your_folder
-├── ME_index
 ├── Snakefile
 ├── cluster.json
+├── config.yaml #modify this file based on your file paths
 ├── sample2json.py
-├── scHiCAR_DNA_18bp_barcode.txt.gz
-├── fq  # move your raw fastq files to this folder
-│   ├── DNA_example_R1_001.fastq.gz
-│   └── DNA_example_R2_001.fastq.gz
+├── fq  # This folder contains processed R1 FASTQ files (e.g., *_cutME_L001_R1_001.fastq.gz)
+│   ├── DNA_example_cutME_L001_R1_001.fastq.gz
 └── script
-    ├── barcode_hash_v2_ME.py
-    ├── fq_barcode_correction_R1_ME.py
-    ├── raw_fq_update.py
+    ├── scHiCAR_R2_parse.py
 ```
 
 ### 2.Create samples.json file
 
-`python3 sample2json.py --fastq_dir fq`
+`python3 sample2json.py --fastq_dir fq` or '`python3 sample2json.py --fastq_dir 05_cutME_fq`
 
 ### 3. Run snakemake pipeline (customize -p as needed based on your HPC environment)
 
