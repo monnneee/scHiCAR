@@ -39,6 +39,11 @@ The resulting files (`05_cutME_fq/*_cutME_*.fastq.gz`) are ready for generating 
 
 ### 3. Generate ATAC fragment files with Snakemake (`*.tsv.gz`)([code](https://github.com/monnneee/scHiCAR/tree/v2/3_ATAC_fragment))
 
+#### Snakemake procedures:
+- Align R1 reads to the reference genome using Snaptools with BWA, and sort BAM files by read name.
+- Extract high-quality, barcode-tagged fragments from BAM files; filter by mapping quality and fragment length; remove duplicates; output fragment-level BED and QC log files.
+- Sort fragments by chromosome, start, and end coordinates.
+
 ### 4. Generate chromatin contact pair files with Snakemake (`*.dedup.pairs.gz`)([code](https://github.com/monnneee/scHiCAR/tree/v2/4_chromatin_contact))
 
 ### 5. Downsteam pseudo-bulk / single-cell analysis ([code](https://github.com/monnneee/scHiCAR/tree/v2/))
