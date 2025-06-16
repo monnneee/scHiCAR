@@ -8,7 +8,7 @@
 - **cutadapt**: `pip install cutadapt==3.3`
 - **STAR**: [v2.7.5c](https://github.com/alexdobin/STAR/releases/tag/2.7.5c)
 
-### 1. Preproces raw FASTQ files of the RNA library with Snakemake and align sequences to the genome ([code](https://github.com/monnneee/scHiCAR/tree/v2/1_RNA))
+### 1. Preproces raw FASTQ files of the RNA library with Snakemake and align sequences to the genome ([code](https://github.com/monnneee/scHiCAR/tree/v2/1_RNA_preprocess))
 
 #### a. Snakemake procedures:
 - Trim specific sequences at the 5′ end of Read 1.  
@@ -24,7 +24,7 @@ The resulting files (`03_corrected_fq/*_all_*.fastq.gz`) are ready for alignment
 
 #### b. Generate filtered gene expression matrices (`barcodes.tsv`, `features.tsv`, and `matrix.mtx`) with STAR.
 
-### 2. Preproces raw FASTQ files of the DNA library with Snakemake ([code](https://github.com/monnneee/scHiCAR/tree/v2/2_DNA))
+### 2. Preproces raw FASTQ files of the DNA library with Snakemake ([code](https://github.com/monnneee/scHiCAR/tree/v2/2_DNA_preprocess))
 
 #### Snakemake procedures:
 - Trim specific sequences at the 5′ end of both Read 1 and Read 2.  
