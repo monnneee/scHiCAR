@@ -1,4 +1,4 @@
-## In the latest scHiCAR protocol, Read 1 corresponds to the ATAC-seq fragment.
+## Note: In the latest scHiCAR protocol, read 1 corresponds to the ATAC-seq fragment.
 ### 1. Download all the files to your folder
 ```
 Your_folder
