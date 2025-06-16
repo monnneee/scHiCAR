@@ -19,7 +19,7 @@ Your_folder
 `python3 sample2json.py --fastq_dir fq`
 
 ### 3. Run snakemake pipeline (customize -p as needed based on your HPC environment)
-Note: Before running Snakemake, please make sure all required Python packages used in the *.py files under the [script](https://github.com/monnneee/scHiCAR/tree/v2/1_RNA_preprocess/script) folder are installed.
+Before running Snakemake, please make sure all required Python packages used in the `.py` files under the `script` folder are installed.
 
 `snakemake --latency-wait 60 -p -j 99 --cluster-config cluster.json --cluster "sbatch -p common -J {cluster.job} --mem={cluster.mem} -N 1 -n {threads} -o {cluster.out} -e {cluster.err} " &> log &`
 
