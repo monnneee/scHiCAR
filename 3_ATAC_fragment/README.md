@@ -14,7 +14,7 @@ Your_folder
 
 ### 2.Create samples.json file
 
-`python3 sample2json.py --fastq_dir fq` or `python3 sample2json.py --fastq_dir 05_cutME_fq`
+`python3 sample2json.py --fastq_dir fq` or `python3 sample2json.py --fastq_dir ../2_DNA_preprocess/05_cutME_fq`
 
 ### 3. Run snakemake pipeline (customize -p as needed based on your HPC environment)
 
