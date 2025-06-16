@@ -1,0 +1,18 @@
+{
+    "__default__":
+    {
+        "job": "{rule}.{wildcards.sample}",
+        "mem": "100G",
+        "out": "cluster_log/{rule}.{wildcards.sample}.out",
+        "err": "cluster_log/{rule}.{wildcards.sample}.err"
+    },
+    "snaptools_align":
+    {
+      "mem": "100G",
+      "threads": "8"
+    },
+      "sort_fragment":
+    {
+      "mem": "100G",
+    }
+}

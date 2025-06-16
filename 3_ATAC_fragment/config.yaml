@@ -1,0 +1,11 @@
+
+#BWA_INDEX: /hpc/group/ydiaolab/genome_ref/mm10_BWA_index/mm10.fa
+#chromsizes : /hpc/group/ydiaolab/genome_ref/mm10_BWA_index/mm10.chrom.sizes
+#genome: mm10
+
+BWA_INDEX: /hpc/group/ydiaolab/genome_ref/hg38_BWA_index/hg38.fa
+chromsizes : /hpc/group/ydiaolab/genome_ref/hg38_BWA_index/hg38.chrom.sizes
+genome: hg38
+
+SAMPLES_JSON: './samples.json'
+

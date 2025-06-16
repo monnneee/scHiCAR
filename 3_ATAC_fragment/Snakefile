@@ -1,0 +1,61 @@
+shell.prefix("set -eo pipefail; echo BEGIN at $(date); ")
+shell.suffix("; exitstat=$?; echo END at $(date); echo exit status was $exitstat; exit $exitstat")
+
+FILES = json.load(open('./samples.json'))
+SAMPLES = sorted(FILES.keys())
+
+configfile: "config.yaml"
+bwa_index= config['BWA_INDEX']
+tmp='./tmp'
+
+TARGETS = []
+final_fragment_file = expand("02_fragment/{sample}.tsv.gz", sample = SAMPLES)
+
+TARGETS.extend(final_fragment_file)
+
+localrules: targetfiles
+
+rule targetfiles:
+    input: TARGETS
+
+
+rule snaptools_align: # align R1 reads to the reference genome using snaptools with BWA, and sort BAM files based on the read name
+    input: r1 = lambda wildcards: FILES[wildcards.sample]['R1']
+    output: "01_bam/{sample}.bam"
+    threads: 8
+    shell:
+        """
+        export PATH=/opt/apps/rhel7/bwa-0.7.17:/opt/apps/rhel8/samtools-1.12/bin:$PATH
+        mkdir ./tmp
+        snaptools align-single-end  \
+          --input-reference={bwa_index}  \
+          --input-fastq1={input.r1} \
+          --output-bam={output} \
+          --aligner=bwa \
+          --read-fastq-command=zcat  \
+          --min-cov=0 \
+          --num-threads={threads}  \
+          --if-sort=True  \
+          --tmp-folder={tmp} \
+          --overwrite=TRUE
+        """
+
+rule bam_to_fragment: # extract high-quality, barcode-tagged fragments from BAM files, filter and deduplicate them, then output fragment BED and QC log
+    input : "01_bam/{sample}.bam"
+    output : "02_fragment/{sample}.tsv", "02_fragment/{sample}.log"
+    threads : 1
+    shell: 
+        """
+        python ./script/scHiCAR_R2_parse.py -i {input} -o {output[0]} -l {output[1]} -m 10 -f 2000 -c 10
+        """
+
+rule sort_fragment:  # sort fragment by chromosome, start, and end positions
+    input : "02_fragment/{sample}.tsv"
+    output : "02_fragment/{sample}.tsv.gz", "02_fragment/{sample}.tsv.gz.tbi"
+    threads : 29
+    shell: 
+        """
+        sort -V -k1,1 -k2,2n -k3,3n --stable --temporary-directory {tmp} --parallel={threads}  -S 80G {input} | \
+        pbgzip -n {threads} -c > {output[0]}
+        tabix -p bed {output[0]}
+        """
