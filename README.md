@@ -37,8 +37,8 @@ The resulting files (`03_corrected_fq/*_all_*.fastq.gz`) are ready for alignment
 
 The resulting files (`05_cutME_fq/*_cutME_*.fastq.gz`) are ready for generating ATAC fragment files and chromatin contact pair files.
 
-### 3. Generate ATAC fragment files with Snakemake (`*.tsv.gz`)([code](https://github.com/monnneee/scHiCAR/tree/v2/))
+### 3. Generate ATAC fragment files with Snakemake (`*.tsv.gz`)([code](https://github.com/monnneee/scHiCAR/tree/v2/3_ATAC_fragment))
 
-### 4. Generate chromatin contact pair files with Snakemake (`*.dedup.pairs.gz`)([code](https://github.com/monnneee/scHiCAR/tree/v2/))
+### 4. Generate chromatin contact pair files with Snakemake (`*.dedup.pairs.gz`)([code](https://github.com/monnneee/scHiCAR/tree/v2/4_chromatin_contact))
 
 ### 5. Downsteam pseudo-bulk / single-cell analysis ([code](https://github.com/monnneee/scHiCAR/tree/v2/))
