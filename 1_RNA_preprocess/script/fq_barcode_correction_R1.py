@@ -90,7 +90,7 @@ barcode_dic = newbarcode_white_list_dic(snakemake.input[2])
 r2 = str(snakemake.input[1])
 
 # white_list_barcode = from_file_to_barcode_list('sciHCAR_whitelist_20Oct25_test.txt.gz')
-white_list_barcode = from_file_to_barcode_list('sciHiCAR_RNA_18bp_barcode.txt.gz')
+white_list_barcode = from_file_to_barcode_list('scHiCAR_RNA_18bp_barcode.txt.gz')
 
 out_r1 = snakemake.output[0]
 out_r2 = snakemake.output[1]
