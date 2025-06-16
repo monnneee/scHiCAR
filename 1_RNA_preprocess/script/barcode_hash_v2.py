@@ -251,7 +251,7 @@ slicer = [6,6,6]
 
 
 fragement_filename = snakemake.input[0]
-barcodes = from_file_to_barcode_list('sciHiCAR_RNA_18bp_barcode.txt.gz') ## change the position ## use the fulllength
+barcodes = from_file_to_barcode_list('scHiCAR_RNA_18bp_barcode.txt.gz') ## change the position ## use the fulllength
 barcode_map_file = snakemake.output['map']
 barcode_log_file = snakemake.output['log']
 OUTPUT_FILENAME =  snakemake.output['sum']
