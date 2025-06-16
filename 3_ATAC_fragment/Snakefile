@@ -25,7 +25,7 @@ rule snaptools_align: # align R1 reads to the reference genome using snaptools w
     threads: 8
     shell:
         """
-        export PATH=/opt/apps/rhel7/bwa-0.7.17:/opt/apps/rhel8/samtools-1.12/bin:$PATH
+        #export PATH=/opt/apps/rhel7/bwa-0.7.17:/opt/apps/rhel8/samtools-1.12/bin:$PATH
         mkdir ./tmp
         snaptools align-single-end  \
           --input-reference={bwa_index}  \
