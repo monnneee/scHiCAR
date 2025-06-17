@@ -47,7 +47,7 @@ rule barcode_QC:
     threads: 8 
     shell:
         """
-        mkdir ./tmp
+        [ -d {tmp} ] || mkdir -p {tmp}
         awk  '{{if(NR%4==1) print substr($0,2,18)}}' {input} | sort --parallel={threads} --temporary-directory={tmp} | uniq -c | sort -nr   > {output} 
         """
 
