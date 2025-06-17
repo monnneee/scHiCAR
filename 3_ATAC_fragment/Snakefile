@@ -9,9 +9,9 @@ bwa_index= config['BWA_INDEX']
 tmp='./tmp'
 
 TARGETS = []
-final_fragment_file = expand("02_fragment/{sample}.tsv.gz", sample = SAMPLES)
 
-TARGETS.extend(final_fragment_file)
+TARGETS.extend(expand("02_fragment/{sample}.tsv.gz.tbi", sample = SAMPLES))
+TARGETS.extend(expand("02_fragment/{sample}.barcode.cut_rank", sample = SAMPLES))
 
 localrules: targetfiles
 
@@ -52,7 +52,7 @@ rule bam_to_fragment: # extract high-quality, barcode-tagged fragments from BAM 
 rule sort_fragment:  # sort fragment by chromosome, start, and end positions
     input : "02_fragment/{sample}.tsv"
     output : "02_fragment/{sample}.tsv.gz", "02_fragment/{sample}.tsv.gz.tbi"
-    threads : 29
+    threads : 8
     shell: 
         """
         sort -V -k1,1 -k2,2n -k3,3n --stable --temporary-directory {tmp} --parallel={threads}  -S 80G {input} | \
