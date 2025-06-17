@@ -48,4 +48,13 @@ The resulting files (`05_cutME_fq/*_cutME_*.fastq.gz`) are ready for generating 
 
 ### 4. Generate chromatin contact pair files with Snakemake (`*.dedup.pairs.gz`)([code](https://github.com/monnneee/scHiCAR/tree/v2/4_chromatin_contact))
 
+#### Snakemake procedures:
+- Align reads using BWA-MEM with -SP mode and convert SAM output to BAM format.
+- Parse mapped reads, select valid contact pairs, and retain 28-bp cell barcodes.
+- Flip contact pairs to generate an upper-triangular matrix.
+- Sort contact pairs by cell barcode and genomic position.
+- Remove PCR and optical duplicates.
+- Extract high-quality cell barcodes based on the knee point of the barcode rank curve.
+- Summarize read pair statistics.
+
 ### 5. Downsteam pseudo-bulk / single-cell analysis ([code](https://github.com/monnneee/scHiCAR/tree/v2/))
