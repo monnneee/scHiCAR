@@ -44,7 +44,7 @@ The resulting files (`05_cutME_fq/*_cutME_*.fastq.gz`) are ready for generating 
 #### Snakemake procedures:
 - Align R1 reads to the reference genome using Snaptools with BWA, and sort BAM files by read name.
 - Convert BAM files to fragment-level BED format.
-- Extract high-quality cell barcodes based on the knee point of the barcode rank curve generated from fragment counts.
+- Extract high-quality cell barcodes based on the knee point of the barcode rank curve.
 
 ### 4. Generate chromatin contact pair files with Snakemake (`*.dedup.pairs.gz`)([code](https://github.com/monnneee/scHiCAR/tree/v2/4_chromatin_contact))
 
