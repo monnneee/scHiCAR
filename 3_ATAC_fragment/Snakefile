@@ -10,8 +10,7 @@ tmp='./tmp'
 
 TARGETS = []
 
-TARGETS.extend(expand("02_fragment/{sample}.tsv.gz.tbi", sample = SAMPLES))
-TARGETS.extend(expand("02_fragment/{sample}.barcode.cut_rank", sample = SAMPLES))
+TARGETS.extend(expand("03_filtered/{sample}.filtered.tsv.gz.tbi", sample=SAMPLES))
 
 localrules: targetfiles
 
@@ -49,16 +48,6 @@ rule bam_to_fragment: # extract high-quality, barcode-tagged fragments from BAM 
         python ./script/scHiCAR_R2_parse.py -i {input} -o {output[0]} -l {output[1]} -m 10 -f 2000 -c 10
         """
 
-rule sort_fragment:  # sort fragment by chromosome, start, and end positions
-    input : "02_fragment/{sample}.tsv"
-    output : "02_fragment/{sample}.tsv.gz", "02_fragment/{sample}.tsv.gz.tbi"
-    threads : 8
-    shell: 
-        """
-        sort -V -k1,1 -k2,2n -k3,3n --stable --temporary-directory {tmp} --parallel={threads}  -S 80G {input} | \
-        pbgzip -n {threads} -c > {output[0]}
-        tabix -p bed {output[0]}
-        """
 rule extract_barcode_based_on_knee: # extract high-quality barcodes based on the knee point of the rank plot
     input : "02_fragment/{sample}.tsv"
     output : "02_fragment/{sample}.barcode.rank", "02_fragment/{sample}.barcode.cut_rank"
@@ -68,3 +57,22 @@ rule extract_barcode_based_on_knee: # extract high-quality barcodes based on the
         Rscript script/extract_barcode_based_on_knee.R {output[0]} 1.05 {output[1]}
         """
 
+rule filter_fragment: # filter fragments based on high-quality barcode list
+    input : "02_fragment/{sample}.tsv","02_fragment/{sample}.barcode.cut_rank"
+    output : "03_filtered/{sample}.filtered.tsv"
+    threads : 1
+    shell: 
+        """
+        python ./script/filter_fragments.py -f {input[0]} -b {input[1]} -o {output}
+        """
+
+rule sort_fragment:  # sort fragments by chromosome, start, and end positions
+    input : "03_filtered/{sample}.filtered.tsv"
+    output : "03_filtered/{sample}.filtered.tsv.gz", "03_filtered/{sample}.filtered.tsv.gz.tbi"
+    threads : 8
+    shell: 
+        """
+        sort -V -k1,1 -k2,2n -k3,3n --stable --temporary-directory {tmp} --parallel={threads}  -S 80G {input} | \
+        pbgzip -n {threads} -c > {output[0]}
+        tabix -p bed {output[0]}
+        """
