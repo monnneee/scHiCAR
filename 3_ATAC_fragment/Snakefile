@@ -59,3 +59,12 @@ rule sort_fragment:  # sort fragment by chromosome, start, and end positions
         pbgzip -n {threads} -c > {output[0]}
         tabix -p bed {output[0]}
         """
+rule extract_barcode_based_on_knee: # extract high-quality barcodes based on the knee point of the rank plot
+    input : "02_fragment/{sample}.tsv"
+    output : "02_fragment/{sample}.barcode.rank", "02_fragment/{sample}.barcode.cut_rank"
+    shell:
+        """
+        awk '{{print $4}}' {input} | sort | uniq -c | sort -nrk1,1 >  {output[0]}
+        Rscript script/extract_barcode_based_on_knee.R {output[0]} 1.05 {output[1]}
+        """
+
