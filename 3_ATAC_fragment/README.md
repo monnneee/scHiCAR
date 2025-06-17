@@ -6,7 +6,7 @@ Your_folder
 ├── cluster.json
 ├── config.yaml #modify this file based on your file paths
 ├── sample2json.py
-├── fq  # This folder contains processed R1 FASTQ files (e.g., *_cutME_L001_R1_001.fastq.gz)
+├── fq  # This folder contains preprocessed R1 FASTQ files (e.g., *_cutME_L001_R1_001.fastq.gz)
 │   ├── DNA_example_cutME_L001_R1_001.fastq.gz
 └── script
     ├── extract_barcode_based_on_knee.R
@@ -15,7 +15,7 @@ Your_folder
 
 ### 2.Create samples.json file
 
-`python3 sample2json.py --fastq_dir fq` or `python3 sample2json.py --fastq_dir ../2_DNA_preprocess/05_cutME_fq`
+`python3 sample2json.py --fastq_dir fq`
 
 ### 3. Run snakemake pipeline (customize -p as needed based on your HPC environment)
 Before running Snakemake, please make sure all required R/Python packages used in the `.R`/`.py` file under the `script` folder are installed.
