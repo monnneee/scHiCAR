@@ -47,7 +47,7 @@ The resulting files (`05_cutME_fq/*_cutME_*.fastq.gz`) are ready for generating 
 - Extract high-quality cell barcodes based on the knee point of the barcode rank curve.
 - Filter fragments using the high-quality barcode list.
 
-The resulting files (`03/filtered/*.filtered.tsv.gz`) can be used in standard scATAC-seq downstream analysis (such as with ArchR, starting with `reformatFragmentFiles` to prepare for `createArrowFiles`).
+The resulting files (`03/filtered/*.filtered.tsv.gz`) can be used in standard scATAC-seq downstream analysis.
 
 ### 4. Generate chromatin contact pair files with Snakemake (`*.dedup.pairs.gz`)([code](https://github.com/monnneee/scHiCAR/tree/v2/4_chromatin_contact))
 
