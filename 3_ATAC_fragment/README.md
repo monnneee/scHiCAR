@@ -9,6 +9,7 @@ Your_folder
 ├── fq  # This folder contains processed R1 FASTQ files (e.g., *_cutME_L001_R1_001.fastq.gz)
 │   ├── DNA_example_cutME_L001_R1_001.fastq.gz
 └── script
+    ├── extract_barcode_based_on_knee.R
     ├── scHiCAR_R2_parse.py
 ```
 
@@ -17,7 +18,7 @@ Your_folder
 `python3 sample2json.py --fastq_dir fq` or `python3 sample2json.py --fastq_dir ../2_DNA_preprocess/05_cutME_fq`
 
 ### 3. Run snakemake pipeline (customize -p as needed based on your HPC environment)
-Before running Snakemake, please make sure all required Python packages used in the `.py` file under the `script` folder are installed.
+Before running Snakemake, please make sure all required R/Python packages used in the `.R`/`.py` file under the `script` folder are installed.
 
 `snakemake --latency-wait 60 -p -j 99 --cluster-config cluster.json --cluster "sbatch -p common -J {cluster.job} --mem={cluster.mem} -N 1 -n {threads} -o {cluster.out} -e {cluster.err} " &> log &`
 
