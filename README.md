@@ -8,6 +8,7 @@
 - **cutadapt**: `pip install cutadapt==3.3`
 - **STAR**: [v2.7.5c](https://github.com/alexdobin/STAR/releases/tag/2.7.5c)
 - **BWA**: [v0.7.17](https://github.com/lh3/bwa/releases/tag/v0.7.17)
+- **pairtools**: `pip install pairtools` v1.1.0 or later
 - **SAMTOOLS**: [v1.12](https://github.com/samtools/samtools/releases/download/1.12/samtools-1.12.tar.bz2)
 
 ### 1. Preproces raw FASTQ files of the RNA library with Snakemake and align sequences to the genome ([code](https://github.com/monnneee/scHiCAR/tree/v2/1_RNA_preprocess))
