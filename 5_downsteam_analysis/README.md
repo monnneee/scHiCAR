@@ -155,3 +155,45 @@ cut -d':' -f1,3 all_valid_DNA_contact.pairs | perl -p -e "s/://g" | cut -f1-5 > 
 python3 split_per_cell_pairs.py --input_file all_valid_DNA_contact.pairs.5columns --output_dir per_cell/
 ```
 The `per_cell` folder can be used for cell embedding and imputing single-cell chromatin contact maps with [Fast-Higashi and Higashi](https://github.com/ma-compbio/Higashi/blob/main/tutorials/Lee%20et%20al%20(Higashi%2BFast-Higashi).ipynb).
+```
+from higashi.Higashi_wrapper import *
+config = ./higashi.JSON"
+higashi_model = Higashi(config)
+higashi_model.process_data()
+higashi_model.prep_model()
+higashi_model.train_for_embeddings()
+
+from fasthigashi.FastHigashi_Wrapper import *
+config = "./Fasthigashi.JSON"
+fastHigashi_model = FastHigashi(config_path=config,
+                     path2input_cache="./Fasthigashi",
+                     path2result_dir="./Fasthigashi",
+                     off_diag=100,
+                     filter=False,
+                     do_conv=False,
+                     do_rwr=False,
+                     do_col=False,
+                     no_col=False)
+fastHigashi_model.prep_dataset(batch_norm=True)
+fastHigashi_model.run_model(dim1=.6,
+                rank=256,
+                n_iter_parafac=1,
+                extra="")
+
+from umap import UMAP
+import seaborn as sns
+import matplotlib.pyplot as plt
+clusters = fastHigashi_model.label_info['category']
+pal1 = {"GLUT":"#ff595e", "GABA":"#1982c4", "NON":"#8ac926"}
+embed = fastHigashi_model.fetch_cell_embedding(final_dim=256,restore_order=False)
+embedding = embed['embed_l2_norm_correct_coverage_fh']
+vec = UMAP(n_components=2, n_neighbors=25, random_state=0).fit_transform(embedding)
+fig = plt.figure(figsize=(5, 3))
+ax = plt.subplot(1, 1, 1)
+sns.scatterplot(x=vec[:, 0], y=vec[:, 1], hue=clusters, ax=ax, s=5, alpha=0.8, linewidth=0, palette=pal1)
+handles, labels = ax.get_legend_handles_labels()
+labels, handles = zip(*sorted(zip(labels, handles), key=lambda t: t[0]))
+ax.legend(handles=handles, labels=labels, bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0., ncol=1)
+plt.tight_layout()
+plt.savefig("example_fastHigashi_UMAP.pdf", format="pdf")
+```
