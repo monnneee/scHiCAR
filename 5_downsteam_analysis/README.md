@@ -69,11 +69,12 @@ rna_filter <- AddMetaData(rna_filter, metadata = setNames(df2$DNAbarcode, rownam
 
 # 2. Pseudo-bulk analysis
 
-#### 2.1 Generate pseudo-bulk ATAC fragment files for each cell type
+#### 2.1 Generate pseudo-bulk ATAC fragment files and contact pair files for each cell type
 ```
 for i in {celltype1,celltype2,celltype3,...,celltypeN}
 do
-python3 split_ATAC_fragment.py -l 3_ATAC_fragment/03_filtered/*.filtered.tsv -s ${i}.DNAbarcode -o ${i}.ATAC.fragment.tsv
+python3 extract_ATAC_fragment.py -l 3_ATAC_fragment/03_filtered/*.filtered.tsv -s ${i}.DNAbarcode -o ${i}.ATAC.fragment.tsv
+python3 extract_pairs.py -l 4_chromatin_contact/05_filtered/*.dedup.filtered.pairs -s ${i}.barcode -o ${i}.contact.pairs
 done
 ```
 
@@ -87,11 +88,10 @@ macs2 callpeak --shift -75 --extsize 150 --nomodel -B --SPMR --keep-dup all --ca
 done
 ```
 
-#### 2.2 Generate pvalue BIGWIG file for open chromatin visualization
+#### 2.3 Generate pvalue BIGWIG file for open chromatin visualization
 slopBed: [install](https://github.com/arq5x/bedtools2/releases/tag/v2.31.0)
 
 bedClip and bedGraphToBigWig: [install](https://github.com/ENCODE-DCC/kentUtils)
-
 ```
 chrom_size=The/PATH/of/chrom/sizes/file
 for i in {celltype1,celltype2,celltype3,...,celltypeN}
@@ -105,4 +105,20 @@ bedGraphToBigWig ${i}.pval.signal.srt.bedgraph $chrom_size ${i}_sig.pval.signal.
 rm -f ${i}.pval.signal.bedgraph ${i}.pval.signal.srt.bedgraph
 rm temp
 done
+```
 
+#### 2.4 Aggregate read pairs into contact matrix in the cooler format (5kb resolution)
+cooler: [install](https://cooler.readthedocs.io/en/latest/quickstart.html)
+```
+chrom_size=The/PATH/of/chrom/sizes/file
+for j in {celltype1,celltype2,celltype3,...,celltypeN}
+do
+cat 4_chromatin_contact/05_filtered/*.dedup.pairs.head ${i}.contact.pairs|bgzip -c > ${j}.contact.pairs.gz
+pairtools sort -o ${j}.sort.pairs.gz ${j}.contact.pairs.gz
+pairix -f ${j}.sort.pairs.gz
+cooler cload pairix --max-split 2 --nproc 12 ${chrom_size}:5000 ${j}.sort.pairs.gz ${j}.5000.cool
+cooler zoomify --balance -r 5000N -n 12 -o ${j}.5000.mcool ${j}.5000.cool
+```
+The *.mcool file can be used to visualization with [Higlass](https://github.com/higlass/higlass)
+
+# 3. Single-cell analysis
