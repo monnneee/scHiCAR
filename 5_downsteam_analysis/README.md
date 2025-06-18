@@ -1,6 +1,6 @@
 # 1. Match each RNA barcode with its corresponding DNA barcode
 
-This step is based on the RNA object generated from the filtered expression matrix using Seurat, along with the predefined 6-bp RNA–DNA barcode pairing scheme used during library preparation.
+This step is based on the RNA object generated from the filtered expression matrix using Seurat R package, along with the predefined 6-bp RNA–DNA barcode pairing scheme used during library preparation.
 
 #### 1.1 Load RNA expression matrix
 ```
@@ -57,6 +57,7 @@ atac_cut_rank<-read.table("3_ATAC_fragment/02_fragment/*.barcode.cut_rank")$V1
 pairs_cut_rank<-read.table("4_chromatin_contact/03_dedup/*.barcode.cut_rank")$V1
 valid_DNA_barcodes <- intersect(atac_cut_rank, pairs_cut_rank)
 df2 <- df[df$DNAbarcode %in% valid_DNA_barcodes, ]
+# Note: If you also want to filter cells based on TSS enrichment and ATAC fragment counts, please run the ArchR functions (`reformatFragmentFiles`, `createArrowFiles` and  `ArchRProject` steps in the "3. Single-cell processing") first and export the processed barcode list for additional filtering here.
 ```
 
 #### 1.6 Subset RNA object and add DNA barcode information to meta.data
@@ -67,7 +68,7 @@ rna_filter <- AddMetaData(rna_filter, metadata = setNames(df2$DNAbarcode, rownam
 
 `write.table(rna_filter@meta.data,"example_metadata.txt",quote=F,sep='\t',col.names=T,row.names=T)` outputs the cell type and DNA barcode information after cell clustering and annotation with Seurat. The metadata table will be used for downstream pseudo-bulk and single-cell analysis of the DNA library.
 
-# 2. Pseudo-bulk analysis for DNA library
+# 2. Pseudo-bulk processing
 
 #### 2.1 Generate pseudo-bulk ATAC fragment files and contact pair files for each cell type
 ```
@@ -81,7 +82,7 @@ done
 #### 2.2 Call open chromatin peaks for each cell types
 macs2: [install](https://github.com/macs3-project/MACS/wiki/Install-macs2)
 ```
-genome_size=hs
+genome_size=mm # or hs
 for i in {celltype1,celltype2,celltype3,...,celltypeN}
 do
 macs2 callpeak --shift -75 --extsize 150 --nomodel -B --SPMR --keep-dup all --call-summits --qval 0.01 --gsize $genome_size --format BED --name ${i} --treatment ${i}.ATAC.fragment.tsv
@@ -121,5 +122,19 @@ cooler zoomify --balance -r 5000N -n 12 -o ${j}.5000.mcool ${j}.5000.cool
 ```
 The *.cool file can be used to call A/B compartment, TAD, and chromatin loops for each cell types. The *.mcool file can be used to visualization with Higlass.
 
-# 3. Single-cell analysis for DNA library
+# 3. Single-cell processing
 
+The `03_filtered/*.filtered.tsv.gz` files can be used in cell clustering and caculating gene score of each cell with ArchR R package.
+```
+library(ArchR)
+addArchRThreads(threads = 1)
+addArchRGenome("mm10")
+fragments <- reformatFragmentFiles("03_filtered/*.filtered.tsv.gz")
+createArrowFiles(inputFiles = "03_filtered/*.filtered-Reformat.tsv.gz", sampleNames = "example", minTSS = 1, minFrags = 1000, addTileMat = TRUE, addGeneScoreMat = TRUE) # Set a small cutoff for minTSS and minFrags if you just want to retain the same cells as in rna_filter@meta.data.
+dna <- ArchRProject(ArrowFiles = "example.arrow",outputDirectory = "obj.name", copyArrows = TRUE)
+rna_metadata<-read.table("example_metadata.txt",header=T,sep='\t',row.names=1)
+dna_filter<-dna[paste("obj.name#",rna_metadata$DNAbarcode,sep=""), ] #filter cells based on the cell barcodes of rna_filter@meta.data
+GSmatrix <- getMatrixFromProject(dna_filter,"GeneScoreMatrix")
+rownames(GSmatrix)<-rowData(GSmatrix)$name
+genescore<-assays(GSmatrix)$GeneScoreMatrix
+colnames(genescore)<-gsub("#","_",colnames(genescore))
