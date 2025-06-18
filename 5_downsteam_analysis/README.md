@@ -1,6 +1,6 @@
 # 1. Match each RNA barcode with its corresponding DNA barcode
 
-This step is based on the RNA object generated from the filtered expression matrix using [Seurat](https://satijalab.org/seurat/articles/install_v5) R package, along with the predefined 6-bp RNA-DNA barcode pairing scheme used during library preparation.
+This step is based on the RNA object generated from the filtered expression matrix using [Seurat](https://satijalab.org/seurat/articles/install_v5) R package, along with a 6-bp barcode list created during library preparation to match RNA and DNA.
 
 #### 1.1 Load RNA expression matrix
 ```
@@ -19,8 +19,8 @@ df$DNAbarcode3<-substr(rownames(df),13,18)
 
 #### 1.3 Replace the first 6bp using predefined map
 ```
-barcode_map <- c( #predefined 6-bp RNA-DNA barcode pairing scheme used during library preparation.
-  "TCATCC" = "TACCCG",
+barcode_map <- c( #predefined 6-bp RNA–DNA barcode pairing scheme used during library preparation
+  "TCATCC" = "TACCCG", #left represents RNA and right represents DNA
   "AGTCAA" = "GAGTTT",
         ...
   "ATGTCA" = "CGATTT",
