@@ -98,7 +98,7 @@ for i in {celltype1,celltype2,celltype3,...,celltypeN}
 do
 sval=$(wc -l ${i}.ATAC.fragment.tsv | awk '{printf "%f", $1/1000000}') #counts the number of tags per million in the (compressed) BED file
 macs2 bdgcmp -t ${i}_treat_pileup.bdg -c ${i}_control_lambda.bdg --o-prefix ${i} -m ppois -S $sval
-slopBed -i ${i}_ppois.bdg -g $chrom_size -b 0 | /datacommons/ydiaolab/yyxu/tools/kentUtils/bin/linux.x86_64/bedClip stdin $chrom_size ${i}.pval.signal.bedgraph
+slopBed -i ${i}_ppois.bdg -g $chrom_size -b 0 | bedClip stdin $chrom_size ${i}.pval.signal.bedgraph
 grep -E 'chrX|chrY' ${i}.pval.signal.bedgraph > temp
 grep -E -v 'chrX|chrY' ${i}.pval.signal.bedgraph|sort -k1.4n -k 2,2n|cat - temp1 > ${i}.pval.signal.srt.bedgraph
 bedGraphToBigWig ${i}.pval.signal.srt.bedgraph $chrom_size ${i}_sig.pval.signal.bigwig
