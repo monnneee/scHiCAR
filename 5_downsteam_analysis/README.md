@@ -1,6 +1,6 @@
 # 1. Match each RNA barcode with its corresponding DNA barcode
 
-This step is based on the RNA object generated from the filtered expression matrix using Seurat R package, along with the predefined 6-bp RNA–DNA barcode pairing scheme used during library preparation.
+This step is based on the RNA object generated from the filtered expression matrix using [Seurat](https://satijalab.org/seurat/articles/install_v5) R package, along with the predefined 6-bp RNA–DNA barcode pairing scheme used during library preparation.
 
 #### 1.1 Load RNA expression matrix
 ```
@@ -125,7 +125,7 @@ The *.cool file can be used to call A/B compartment, TAD, and chromatin loops fo
 # 3. Single-cell processing
 
 #### 3.1 single cell ATAC analysis
-The `03_filtered/*.filtered.tsv.gz` files can be used  for TSS enrichment score and gene score calculation, as well as cell clustering, using the ArchR R package.
+The `03_filtered/*.filtered.tsv.gz` files can be used  for TSS enrichment score and gene score calculation, as well as cell clustering, using the [ArchR](https://www.archrproject.com/index.html) R package.
 ```
 library(ArchR)
 addArchRThreads(threads = 1)
