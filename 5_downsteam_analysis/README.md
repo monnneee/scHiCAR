@@ -40,7 +40,7 @@ reverse_complement <- function(seq) {
   return(rev_seq)
 }
 df$DNAbarcode3<-unname(sapply(df$DNAbarcode3, reverse_complement))
-df$DNAbarcode<-paste(df$DNAbarcode1,df$DNAbarcode2,df$DNAbarcode3,sep="")
+df$DNAbarcode<-paste(df$DNAbarcode1,df$DNAbarcode2,df$DNAbarcode3,sep="") # total DNA barcodes correspond to RNA barcodes
 df$DNAbarcode1<-NULL
 df$DNAbarcode2<-NULL
 df$DNAbarcode3<-NULL
