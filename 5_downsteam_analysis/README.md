@@ -1,4 +1,4 @@
-### 1. Match each RNA barcode with its corresponding DNA barcode
+# 1. Match each RNA barcode with its corresponding DNA barcode
 
 This step is based on the RNA object generated from the filtered expression matrix using Seurat, along with the predefined 6-bp RNA–DNA barcode pairing scheme used during library preparation.
 
