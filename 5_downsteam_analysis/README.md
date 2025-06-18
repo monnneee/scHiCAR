@@ -64,3 +64,5 @@ df2 <- df[df$DNAbarcode %in% valid_DNA_barcodes, ]
 rna_filter <- subset(rna, cells = rownames(df2))
 rna_filter <- AddMetaData(rna_filter, metadata = setNames(df2$DNAbarcode, rownames(df2)), col.name = "DNAbarcode")
 ```
+
+`write.table(rna_filter@meta.data,"example_metadata.txt",quote=F,sep='\t',col.names=T,row.names=T)` outputs the cell type and DNA barcode information after cell clustering and annotation with Seurat. The metadata table will be used for downstream pseudo-bulk and single-cell analysis of the DNA library.
