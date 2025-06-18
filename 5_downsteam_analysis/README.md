@@ -4,7 +4,7 @@ This step is based on the RNA object generated from the filtered expression matr
 ```
 library(Seurat)
 data<- Read10X(data.dir = "1_RNA_preprocess/GeneFull/filtered")
-rna<-CreateSeuratObject(counts = data, project = "xw346", min.cells = 3, min.features = 200)
+rna<-CreateSeuratObject(counts = data, project = "example", min.cells = 3, min.features = 200)
 df<-as.data.frame(rna$orig.ident)
 colnames(df)<-"RNAlibrary"
 df$DNAbarcode1<-substr(gsub("^(.*)_","",rownames(df)),1,6)
