@@ -178,11 +178,13 @@ fastHigashi_model = FastHigashi(config_path=config,
                      do_col=False,
                      no_col=False)
 fastHigashi_model.prep_dataset(batch_norm=True)
+
 ### Run the model:
 fastHigashi_model.run_model(dim1=.6,
                 rank=256,
                 n_iter_parafac=1,
                 extra="")
+
 ### Visualize the embedding results:
 clusters = fastHigashi_model.label_info['category']
 pal1 = {"GLUT":"#ff595e", "GABA":"#1982c4", "NON":"#8ac926"}
