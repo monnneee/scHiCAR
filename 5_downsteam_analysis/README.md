@@ -60,6 +60,7 @@ df2 <- df[df$DNAbarcode %in% valid_DNA_barcodes, ]
 ```
 
 #### 1.6 Subset RNA object and add DNA barcode information to meta.data
+```
 rna_filter <- subset(rna, cells = rownames(df2))
 rna_filter <- AddMetaData(rna_filter, metadata = setNames(df2$DNAbarcode, rownames(df2)), col.name = "DNAbarcode")
 ```
