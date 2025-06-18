@@ -154,7 +154,7 @@ python3 extract_pairs.py -l 4_chromatin_contact/05_filtered/*.dedup.filtered.pai
 cut -d':' -f1,3 all_valid_DNA_contact.pairs | perl -p -e "s/://g" | cut -f1-5 > all_valid_DNA_contact.pairs.5columns
 python3 split_per_cell_pairs.py --input_file all_valid_DNA_contact.pairs.5columns --output_dir per_cell/
 ```
-The `per_cell` folder can be used for cell embedding and imputing single-cell chromatin contact maps with [Fast-Higashi and Higashi](https://github.com/ma-compbio/Higashi/blob/main/tutorials/Lee%20et%20al%20(Higashi%2BFast-Higashi).ipynb).
+The `per_cell` folder can be used for cell embedding and imputing single-cell chromatin contact maps with [Fast-Higashi and Higashi](https://github.com/ma-compbio/Higashi).
 ```
 ### Process the input data：
 from higashi.Higashi_wrapper import *
