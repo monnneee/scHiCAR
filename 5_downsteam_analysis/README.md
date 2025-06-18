@@ -66,3 +66,13 @@ rna_filter <- AddMetaData(rna_filter, metadata = setNames(df2$DNAbarcode, rownam
 ```
 
 `write.table(rna_filter@meta.data,"example_metadata.txt",quote=F,sep='\t',col.names=T,row.names=T)` outputs the cell type and DNA barcode information after cell clustering and annotation with Seurat. The metadata table will be used for downstream pseudo-bulk and single-cell analysis of the DNA library.
+
+# 2. Pseudo-bulk analysis
+
+#### 2.1 generate pseudo-bulk ATAC fragment files for each cell type
+```
+for i in {celltype1,celltype2,celltype3,...,celltypeN}
+do
+python3 split_ATAC_fragment.py -l 3_ATAC_fragment/03_filtered/*.filtered.tsv -s ${i}.DNAbarcode -o ${i}.fragment.tsv
+done
+```
