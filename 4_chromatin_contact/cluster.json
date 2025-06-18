@@ -1,0 +1,19 @@
+{
+    "__default__":
+    {
+        "job": "{rule}.{wildcards.sample}",
+        "mem": "100G",
+        "out": "cluster_log/{rule}.{wildcards.sample}.out",
+        "err": "cluster_log/{rule}.{wildcards.sample}.err",
+        "threads": 8
+    },
+        "align":
+    {
+        "mem": "50G"
+    },
+        "sort":
+    {
+        "mem": "100G"
+    }
+
+}

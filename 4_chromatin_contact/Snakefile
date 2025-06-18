@@ -1,0 +1,117 @@
+shell.prefix("set -eo pipefail; echo BEGIN at $(date); ")
+shell.suffix("; exitstat=$?; echo END at $(date); echo exit status was $exitstat; exit $exitstat")
+import collections
+configfile: "config.yaml"
+
+FILES = json.load(open(config['SAMPLES_JSON'])) ##  fastq for each lane
+SAMPLES = sorted(FILES.keys())
+BWA_INDEX = config['BWA_INDEX']
+chromsizes = config['chromsizes']
+TARGETS = []
+genome = config['genome']
+tmp='./tmp'
+
+
+TARGETS.extend(expand("04_summary/{sample}.read.summary", sample = SAMPLES))
+TARGETS.extend(expand("05_filtered/{sample}.dedup.filtered.pairs.gz", sample = SAMPLES))
+
+
+localrules: read_info_summary, targetfiles
+rule targetfiles:
+    input: TARGETS
+
+
+rule align: # align reads using BWA-MEM with -SP mode and convert SAM output to BAM format
+    input:
+        r1 = lambda wildcards: FILES[wildcards.sample]['R1'],
+        r2 = lambda wildcards: FILES[wildcards.sample]['R2']
+    output: "01_bam/{sample}.bam"
+    threads: 8
+    message: "bwa {input}: {threads} threads"
+    log:
+         "00_log/{sample}.bwa"
+    shell:
+        """
+        bwa mem -SP -t {threads} {BWA_INDEX} {input} | samtools view -bS - > {output} 2 > {log}
+        """
+
+rule parse_select: # parse sequence alignments into Hi-C pairs; select valid contact pairs; retain 28-bp cell barcodes
+    input:  "01_bam/{sample}.bam"
+    output: "02_pairs/{sample}.select.pairsam.gz",  "02_pairs/{sample}.raw.pairsam.stat"
+    message: "prase bam {input} "
+    threads: 8
+    shell:
+        """
+        pairtools parse -c {chromsizes}  \
+        --assembly {genome} --min-mapq 10 \
+        --max-molecule-size 2000 --max-inter-align-gap 20 \
+        --walks-policy all  --no-flip --drop-seq --drop-sam  \
+        --output-stats {output[1]}  {input} | pairtools select '(pair_type=="UU") or (pair_type=="UR") or (pair_type=="RU")' | \
+        awk  -F $"\\t" 'BEGIN {{OFS=FS}} ; {{ if($1 ~ /^#/) {{ print $0}} else {{ print substr($1,1,28),$2,$3,$4,$5,$6,$7,$8}}}}' | \
+        pbgzip -n {threads} -c > {output[0]}
+        """
+
+rule flip: # flip pairs to get an upper-triangular matrix
+    input:  "02_pairs/{sample}.select.pairsam.gz"
+    output: "02_pairs/{sample}.fliped.select.pairs.gz"
+    message: "flip and sort {input} "
+    threads: 1
+    shell:
+        """
+        pairtools flip -c {chromsizes} {input} -o {output}
+        """
+
+
+rule sort: # sort pairs by cell and position
+    input:  "02_pairs/{sample}.fliped.select.pairs.gz"
+    output: "02_pairs/{sample}.cell.sorted.pairs"
+    message: " sort by cells {input} "
+    threads: 8
+    shell:
+        """
+        export LC_COLLATE=C; export LANG=C;
+        [ -d {tmp} ] || mkdir -p {tmp}
+        zcat {input} | grep -v "^#" | sort -V -k1,1 -k2,2 -k4,4 -k3,3n -k5,5n --stable --parallel={threads} --temporary-directory={tmp} -S 100G  > {output}
+        """
+
+
+rule dedup: #remove PCR/optical duplicates
+    input:  "02_pairs/{sample}.cell.sorted.pairs",  "02_pairs/{sample}.select.pairsam.gz"
+    output: "03_dedup/{sample}.dedup.pairs.gz" ,"03_dedup/{sample}.dedup.pairs.stat", "03_dedup/{sample}.select.pairs.head"  
+    message: "dedup to filted {input} "
+    threads: 8
+    shell:
+        """
+        zcat {input[1]} | head -n 2000 | grep "^#" > {output[2]} || true
+        cat {output[2]} {input[0]} | pairtools dedup -p {threads} --max-mismatch 1 --method max -o {output[0]}  --output-stats  {output[1]} 
+        """
+
+rule read_info_summary:  # summarize read statistics
+    input:  "02_pairs/{sample}.raw.pairsam.stat", "03_dedup/{sample}.dedup.pairs.stat"
+    output: "04_summary/{sample}.read.summary"
+    threads: 1
+    script:
+        "script/read_summary.R"
+
+rule extract_barcode_based_on_knee: # extract high-quality barcodes based on the knee point of the rank plot
+    input:  "03_dedup/{sample}.dedup.pairs.gz"
+    output: "03_dedup/{sample}.dedup.pairs", "03_dedup/{sample}.barcode.rank",  "03_dedup/{sample}.barcode.cut_rank"
+    message: "dedup to filted {input} "
+    threads: 1
+    shell:
+        """
+        zcat {input[0]} > {output[0]}
+        awk '{{print substr($1,0,18)}}' {output[0]} | sort | uniq -c | sort -nrk1,1 >  {output[1]}
+        Rscript script/extract_barcode_based_on_knee.R {output[1]} 1.1 {output[2]}
+        """
+
+rule filter_pairs: # filter pairs based on high-quality barcode list
+    input : "03_dedup/{sample}.dedup.pairs","03_dedup/{sample}.barcode.cut_rank"
+    output : "05_filtered/{sample}.dedup.filtered.pairs", "05_filtered/{sample}.dedup.filtered.pairs.gz", "05_filtered/{sample}.dedup.pairs.head"
+    threads : 8
+    shell: 
+        """
+        python ./script/filter_pairs.py -p {input[0]} -b {input[1]} -o {output[0]}
+        grep "^#" {input[0]} > {output[2]}
+        cat {output[2]} {output[0]} | pbgzip -n {threads} -c > {output[1]}
+        """
