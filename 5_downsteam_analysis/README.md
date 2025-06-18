@@ -74,8 +74,8 @@ rna_filter <- AddMetaData(rna_filter, metadata = setNames(df2$DNAbarcode, rownam
 ```
 for i in {celltype1,celltype2,celltype3,...,celltypeN}
 do
-python3 extract_ATAC_fragment.py -l 3_ATAC_fragment/03_filtered/*.filtered.tsv -s ${i}.DNAbarcode -o ${i}.ATAC.fragment.tsv
-python3 extract_pairs.py -l 4_chromatin_contact/05_filtered/*.dedup.filtered.pairs -s ${i}.barcode -o ${i}.contact.pairs
+python3 extract_ATAC_fragment.py -l 3_ATAC_fragment/03_filtered/*.filtered.tsv -s ${i}.DNAbarcode.txt -o ${i}.ATAC.fragment.tsv
+python3 extract_pairs.py -l 4_chromatin_contact/05_filtered/*.dedup.filtered.pairs -s ${i}.DNAbarcode.txt -o ${i}.contact.pairs
 done
 ```
 
@@ -148,3 +148,5 @@ saveRDS(dna_filter,"dna_filter.rds")
 ```
 
 #### single cell 3D genome analysis
+python3 extract_pairs.py -l 4_chromatin_contact/05_filtered/*.dedup.filtered.pairs -s all_valid_DNA_barcodes.txt -o all_valid_DNA_contact.pairs
+cut -d':' -f1,3 all_valid_DNA_contact.pairs | perl -p -e "s/://g" | cut -f1-5 > all_valid_DNA_contact.pairs.5columns
