@@ -78,7 +78,7 @@ done
 ```
 
 #### 2.2 Call open chromatin peaks for each cell types
-**macs2**: [install](https://github.com/macs3-project/MACS/wiki/Install-macs2)
+macs2: [install](https://github.com/macs3-project/MACS/wiki/Install-macs2)
 ```
 genome_size=hs
 for i in {celltype1,celltype2,celltype3,...,celltypeN}
@@ -88,8 +88,10 @@ done
 ```
 
 #### 2.2 Generate pvalue BIGWIG file for open chromatin visualization
-**slopBed**: [install](https://github.com/arq5x/bedtools2/releases/tag/v2.31.0)
-**bedClip and bedGraphToBigWig**: [install](https://github.com/ENCODE-DCC/kentUtils)
+slopBed: [install](https://github.com/arq5x/bedtools2/releases/tag/v2.31.0)
+
+bedClip and bedGraphToBigWig: [install](https://github.com/ENCODE-DCC/kentUtils)
+
 ```
 chrom_size=The/PATH/of/chrom/sizes/file
 for i in {celltype1,celltype2,celltype3,...,celltypeN}
