@@ -156,14 +156,17 @@ python3 split_per_cell_pairs.py --input_file all_valid_DNA_contact.pairs.5column
 ```
 The `per_cell` folder can be used for cell embedding and imputing single-cell chromatin contact maps with [Fast-Higashi and Higashi](https://github.com/ma-compbio/Higashi/blob/main/tutorials/Lee%20et%20al%20(Higashi%2BFast-Higashi).ipynb).
 ```
+### Process the input data：
 from higashi.Higashi_wrapper import *
 config = ./higashi.JSON"
 higashi_model = Higashi(config)
 higashi_model.process_data()
-higashi_model.prep_model()
-higashi_model.train_for_embeddings()
 
+### Initialize Fast-Higashi model and turn sparse matrices into sparse tensors:
 from fasthigashi.FastHigashi_Wrapper import *
+from umap import UMAP
+import seaborn as sns
+import matplotlib.pyplot as plt
 config = "./Fasthigashi.JSON"
 fastHigashi_model = FastHigashi(config_path=config,
                      path2input_cache="./Fasthigashi",
@@ -175,14 +178,12 @@ fastHigashi_model = FastHigashi(config_path=config,
                      do_col=False,
                      no_col=False)
 fastHigashi_model.prep_dataset(batch_norm=True)
+### Run the model:
 fastHigashi_model.run_model(dim1=.6,
                 rank=256,
                 n_iter_parafac=1,
                 extra="")
-
-from umap import UMAP
-import seaborn as sns
-import matplotlib.pyplot as plt
+### Visualize the embedding results:
 clusters = fastHigashi_model.label_info['category']
 pal1 = {"GLUT":"#ff595e", "GABA":"#1982c4", "NON":"#8ac926"}
 embed = fastHigashi_model.fetch_cell_embedding(final_dim=256,restore_order=False)
@@ -196,4 +197,16 @@ labels, handles = zip(*sorted(zip(labels, handles), key=lambda t: t[0]))
 ax.legend(handles=handles, labels=labels, bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0., ncol=1)
 plt.tight_layout()
 plt.savefig("example_fastHigashi_UMAP.pdf", format="pdf")
+
+### train higashi for contact map imputation：
+from higashi.Higashi_wrapper import *
+config = "./higashi.JSON"
+higashi_model = Higashi(config)
+higashi_model.prep_model()
+higashi_model.train_for_imputation_nbr_0()
+higashi_model.impute_no_nbr()
+higashi_model.train_for_imputation_with_nbr()
+higashi_model.impute_with_nbr()
+with open('higashi_model.impute.pkl', 'wb') as f:
+    pickle.dump(higashi_model, f)
 ```
