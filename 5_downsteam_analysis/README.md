@@ -124,7 +124,8 @@ The *.cool file can be used to call A/B compartment, TAD, and chromatin loops fo
 
 # 3. Single-cell processing
 
-The `03_filtered/*.filtered.tsv.gz` files can be used in cell clustering and caculating gene score of each cell with ArchR R package.
+#### 3.1 single cell ATAC analysis
+The `03_filtered/*.filtered.tsv.gz` files can be used  for TSS enrichment score and gene score calculation, as well as cell clustering, using the ArchR R package.
 ```
 library(ArchR)
 addArchRThreads(threads = 1)
@@ -138,3 +139,12 @@ GSmatrix <- getMatrixFromProject(dna_filter,"GeneScoreMatrix")
 rownames(GSmatrix)<-rowData(GSmatrix)$name
 genescore<-assays(GSmatrix)$GeneScoreMatrix
 colnames(genescore)<-gsub("#","_",colnames(genescore))
+saveRDS(genescore,"genescore_matrix.rds")
+dna_filter <- addIterativeLSI(ArchRProj = dna_filter,useMatrix = "TileMatrix",name = "IterativeLSI",iterations = 4,clusterParams = list(resolution = c(0.2,0.6,1.2),sampleCells = 20000, n.start = 10), varFeatures = 100000,dimsToUse = 1:50,outlierQuantiles = NULL)
+dna_filter <- addClusters(input = dna_filter,reducedDims = "IterativeLSI",method = "Seurat",name = "Clusters",resolution = 0.8)
+dna_filter <- addUMAP(ArchRProj = dna_filter, reducedDims = "IterativeLSI", name = "UMAP", minDist = 0.2)
+plotEmbedding(ArchRProj = dna_filter, colorBy = "cellColData", name = "Clusters", embedding = "UMAP")
+saveRDS(dna_filter,"dna_filter.rds")
+```
+
+#### single cell 3D genome analysis
