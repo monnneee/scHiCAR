@@ -69,10 +69,38 @@ rna_filter <- AddMetaData(rna_filter, metadata = setNames(df2$DNAbarcode, rownam
 
 # 2. Pseudo-bulk analysis
 
-#### 2.1 generate pseudo-bulk ATAC fragment files for each cell type
+#### 2.1 Generate pseudo-bulk ATAC fragment files for each cell type
 ```
 for i in {celltype1,celltype2,celltype3,...,celltypeN}
 do
-python3 split_ATAC_fragment.py -l 3_ATAC_fragment/03_filtered/*.filtered.tsv -s ${i}.DNAbarcode -o ${i}.fragment.tsv
+python3 split_ATAC_fragment.py -l 3_ATAC_fragment/03_filtered/*.filtered.tsv -s ${i}.DNAbarcode -o ${i}.ATAC.fragment.tsv
 done
 ```
+
+#### 2.2 Call open chromatin peaks for each cell types
+**macs2**: [install](https://github.com/macs3-project/MACS/wiki/Install-macs2)
+```
+genome_size=hs
+for i in {celltype1,celltype2,celltype3,...,celltypeN}
+do
+macs2 callpeak --shift -75 --extsize 150 --nomodel -B --SPMR --keep-dup all --call-summits --qval 0.01 --gsize $genome_size --format BED --name ${i} --treatment ${i}.ATAC.fragment.tsv
+done
+```
+
+#### 2.2 Generate pvalue BIGWIG file for open chromatin visualization
+**slopBed**: [install](https://github.com/arq5x/bedtools2/releases/tag/v2.31.0)
+**bedClip and bedGraphToBigWig**: [install](https://github.com/ENCODE-DCC/kentUtils)
+```
+chrom_size=The/PATH/of/chrom/sizes/file
+for i in {celltype1,celltype2,celltype3,...,celltypeN}
+do
+sval=$(wc -l ${i}.ATAC.fragment.tsv | awk '{printf "%f", $1/1000000}') #counts the number of tags per million in the (compressed) BED file
+macs2 bdgcmp -t ${i}_treat_pileup.bdg -c ${i}_control_lambda.bdg --o-prefix ${i} -m ppois -S $sval
+slopBed -i ${i}_ppois.bdg -g $chrom_size -b 0 | /datacommons/ydiaolab/yyxu/tools/kentUtils/bin/linux.x86_64/bedClip stdin $chrom_size ${i}.pval.signal.bedgraph
+grep -E 'chrX|chrY' ${i}.pval.signal.bedgraph > temp
+grep -E -v 'chrX|chrY' ${i}.pval.signal.bedgraph|sort -k1.4n -k 2,2n|cat - temp1 > ${i}.pval.signal.srt.bedgraph
+bedGraphToBigWig ${i}.pval.signal.srt.bedgraph $chrom_size ${i}_sig.pval.signal.bigwig
+rm -f ${i}.pval.signal.bedgraph ${i}.pval.signal.srt.bedgraph
+rm temp
+done
+
