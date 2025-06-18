@@ -119,7 +119,7 @@ pairix -f ${j}.sort.pairs.gz
 cooler cload pairix --max-split 2 --nproc 12 ${chrom_size}:5000 ${j}.sort.pairs.gz ${j}.5000.cool
 cooler zoomify --balance -r 5000N -n 12 -o ${j}.5000.mcool ${j}.5000.cool
 ```
-The *.mcool file can be used to visualization with [Higlass](https://github.com/higlass/higlass)
+The *.cool file can be used to call A/B compartment, TAD, and chromatin loops for each cell types. The *.mcool file can be used to visualization with Higlass.
 
 # 3. Single-cell analysis for DNA library
 
