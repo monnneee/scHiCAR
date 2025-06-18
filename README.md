@@ -23,7 +23,7 @@
 - Correct barcodes that have only one mismatch relative to the whitelist.  
 - Compress and merge filtered FASTQ files from the two primer strategies.
 
-The resulting files (`03_corrected_fq/*_all_*.fastq.gz`) are ready for alignment using STAR.
+The resulting files (`03_corrected_fq/*_all_L001_R*_001.fastq.gz`) are ready for alignment using STAR.
 
 #### b. Generate filtered gene expression matrices (`barcodes.tsv`, `features.tsv`, and `matrix.mtx`) with STAR.
 
@@ -38,7 +38,7 @@ The resulting files (`03_corrected_fq/*_all_*.fastq.gz`) are ready for alignment
 - Compress the filtered FASTQ files.  
 - Remove ME (mosaic end) sequences from the reads.  
 
-The resulting files (`05_cutME_fq/*_cutME_*.fastq.gz`) are ready for generating ATAC fragment files and chromatin contact pair files.
+The resulting files (`05_cutME_fq/*_cutME_L001_R*_001.fastq.gz`) are ready for generating ATAC fragment files and chromatin contact pair files.
 
 ### 3. Generate ATAC fragment files with Snakemake (`*.tsv.gz`)([code](https://github.com/monnneee/scHiCAR/tree/v2/3_ATAC_fragment))
 
