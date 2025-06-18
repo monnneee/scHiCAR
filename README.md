@@ -61,4 +61,6 @@ The resulting files (`03/filtered/*.filtered.tsv.gz`) can be used in standard sc
 - Extract high-quality cell barcodes based on the knee point of the barcode rank curve.
 - Summarize read pair statistics.
 
+The resulting files (`05_filtered/*.dedup.filtered.pairs.gz) can be used in downsteam pseudo-bulk or single-cell contact analysis.
+
 ### 5. Downsteam pseudo-bulk / single-cell analysis ([code](https://github.com/monnneee/scHiCAR/tree/v2/))
