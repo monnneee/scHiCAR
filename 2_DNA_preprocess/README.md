@@ -24,4 +24,4 @@ Before running Snakemake, please make sure all required Python packages used in 
 
 `snakemake --latency-wait 60 -p -j 99 --cluster-config cluster.json --cluster "sbatch -p common -J {cluster.job} --mem={cluster.mem} -N 1 -n {threads} -o {cluster.out} -e {cluster.err} " &> log &`
 
-The output `05_cutME_fq/*_cutME_L001_R*_001.fastq.gz` files will be used to generate ATAC fragment files ([3_ATAC_fragment](https://github.com/monnneee/scHiCAR/tree/v2/3_ATAC_fragment)) and chromatin contact pair files ([4_chromatin_contact](https://github.com/monnneee/scHiCAR/tree/v2/4_chromatin_contact)).
+The output `05_cutME_fq/*_cutME_L001_R*_001.fastq.gz` files will be used to generate ATAC fragment files ([3_ATAC_fragment](https://github.com/monnneee/scHiCAR/tree/dev/3_ATAC_fragment)) and chromatin contact pair files ([4_chromatin_contact](https://github.com/monnneee/scHiCAR/tree/dev/4_chromatin_contact)).
