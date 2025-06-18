@@ -67,7 +67,7 @@ rna_filter <- AddMetaData(rna_filter, metadata = setNames(df2$DNAbarcode, rownam
 
 `write.table(rna_filter@meta.data,"example_metadata.txt",quote=F,sep='\t',col.names=T,row.names=T)` outputs the cell type and DNA barcode information after cell clustering and annotation with Seurat. The metadata table will be used for downstream pseudo-bulk and single-cell analysis of the DNA library.
 
-# 2. Pseudo-bulk analysis
+# 2. Pseudo-bulk analysis for DNA library
 
 #### 2.1 Generate pseudo-bulk ATAC fragment files and contact pair files for each cell type
 ```
@@ -121,4 +121,5 @@ cooler zoomify --balance -r 5000N -n 12 -o ${j}.5000.mcool ${j}.5000.cool
 ```
 The *.mcool file can be used to visualization with [Higlass](https://github.com/higlass/higlass)
 
-# 3. Single-cell analysis
+# 3. Single-cell analysis for DNA library
+
