@@ -57,7 +57,7 @@ atac_cut_rank<-read.table("3_ATAC_fragment/02_fragment/*.barcode.cut_rank")$V1
 pairs_cut_rank<-read.table("4_chromatin_contact/03_dedup/*.barcode.cut_rank")$V1
 valid_DNA_barcodes <- intersect(atac_cut_rank, pairs_cut_rank)
 df2 <- df[df$DNAbarcode %in% valid_DNA_barcodes, ]
-# Note: If you also want to filter cells based on TSS enrichment and ATAC fragment counts, please run the ArchR functions (`reformatFragmentFiles`, `createArrowFiles` and  `ArchRProject` steps in the "3. Single-cell processing") first and export the processed barcode list for additional filtering here.
+# Note: If you also want to filter cells based on TSS enrichment, please run the ArchR functions (`reformatFragmentFiles`, `createArrowFiles` and  `ArchRProject` steps in the "3. Single-cell processing") first and export the processed barcode list for additional filtering here.
 ```
 
 #### 1.6 Subset RNA object and add DNA barcode information to meta.data
