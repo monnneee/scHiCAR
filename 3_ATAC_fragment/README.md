@@ -6,7 +6,7 @@ Your_folder
 ├── cluster.json
 ├── config.yaml #modify this file based on your file paths
 ├── sample2json.py
-├── fq  # This folder contains preprocessed R1 FASTQ files (e.g., *_cutME_L001_R1_001.fastq.gz)
+├── fq  # This folder contains preprocessed R1 FASTQ files
 │   ├── DNA_example_cutME_L001_R1_001.fastq.gz
 └── script
     ├── extract_barcode_based_on_knee.R
