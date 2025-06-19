@@ -58,8 +58,9 @@ The resulting files (`03/filtered/*.filtered.tsv.gz`) can be used in standard sc
 - Flip contact pairs to generate an upper-triangular matrix.
 - Sort contact pairs by cell barcode and genomic position.
 - Remove PCR and optical duplicates.
-- Extract high-quality cell barcodes based on the knee point of the barcode rank curve.
 - Summarize read pair statistics.
+- Filter contact pairs based on the knee point of the barcode rank curve.
+
 
 The resulting files (`05_filtered/*.dedup.filtered.pairs.gz`) can be used in downsteam pseudo-bulk or single-cell contact analysis.
 
