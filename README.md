@@ -7,6 +7,7 @@
 - **snakemake**:  `pip install snakemake==5.13.0`
 - **cutadapt**: `pip install cutadapt==3.3`
 - **pairtools**: `pip install pairtools==1.1.0`
+- **snaptools**: `pip install snaptools==1.4.8`
 - **STAR**: [v2.7.5c](https://github.com/alexdobin/STAR/releases/tag/2.7.5c)
 - **BWA**: [v0.7.17](https://github.com/lh3/bwa/releases/tag/v0.7.17)
 - **SAMTOOLS**: [v1.12](https://github.com/samtools/samtools/releases/download/1.12/samtools-1.12.tar.bz2)
