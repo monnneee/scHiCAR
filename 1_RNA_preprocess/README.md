@@ -25,7 +25,7 @@ Before running Snakemake, please make sure all required Python packages used in 
 
 ### 4. Align reads to the genome and generate a filtered matrix folder that includes the files `barcodes.tsv`, `features.tsv`, and `matrix.mtx`
 ```
-gunzip -c sciHiCAR_RNA_18bp_barcode.txt.gz > sciHiCAR_RNA_18bp_barcode.txt
+gunzip -c scHiCAR_RNA_18bp_barcode.txt.gz > scHiCAR_RNA_18bp_barcode.txt
 
 STAR --runMode alignReads \
 --genomeDir PATH_TO_STAR_INDEX_folder \
@@ -35,7 +35,7 @@ STAR --runMode alignReads \
 --outSAMattributes NH HI nM AS CR UR CB UB GX GN sS sQ sM \
 --soloType CB_UMI_Simple \
 --soloFeatures GeneFull \
---soloCBwhitelist sciHiCAR_RNA_18bp_barcode.txt \
+--soloCBwhitelist scHiCAR_RNA_18bp_barcode.txt \
 --soloCBstart 1 \
 --outSAMmapqUnique 255 \
 --soloCBlen 18 \
