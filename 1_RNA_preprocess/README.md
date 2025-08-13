@@ -49,7 +49,7 @@ STAR --runMode alignReads \
 --readFilesCommand zcat \
 --genomeSAindexNbases 2 \
 --soloBarcodeReadLength 0 \
---soloCellFilter EmptyDrops_CR
+--soloCellFilter EmptyDrops_CR \
 --limitBAMsortRAM 200000000000 > log 2>&1 &
 ```
 The STAR output **GeneFull/filtered** folder can be used in standard scRNA-seq downstream analysis (such as with [Seurat](https://satijalab.org/seurat/articles/pbmc3k_tutorial)).
