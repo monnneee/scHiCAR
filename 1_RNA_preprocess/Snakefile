@@ -13,7 +13,7 @@ TARGETS.extend(expand("03_corrected_fq/{sample}_ME_L001_R2_001.fastq.gz",sample 
 TARGETS.extend(expand("03_corrected_fq/{sample}_all_L001_R1_001.fastq.gz",sample = SAMPLES ))
 TARGETS.extend(expand("03_corrected_fq/{sample}_all_L001_R2_001.fastq.gz",sample = SAMPLES ))
 
-localrules: targetfiles, read_info_summary
+localrules: targetfiles
 rule targetfiles:
     input: TARGETS
 
@@ -23,10 +23,10 @@ rule cut_specific_sequences:
         r1 = lambda wildcards: FILES[wildcards.sample]['R1'],
         r2 = lambda wildcards: FILES[wildcards.sample]['R2']
     output: 
-        r1 = "01_raw_fq_update/{sample}_adapter_L001_R1_001.fastq",
-        r2 = "01_raw_fq_update/{sample}_adapter_L001_R2_001.fastq",
-        r3 = "01_raw_fq_update/{sample}_NOadapter_L001_R1_001.fastq",
-        r4 = "01_raw_fq_update/{sample}_NOadapter_L001_R2_001.fastq"
+        r1 = temp("01_raw_fq_update/{sample}_adapter_L001_R1_001.fastq"),
+        r2 = temp("01_raw_fq_update/{sample}_adapter_L001_R2_001.fastq"),
+        r3 = temp("01_raw_fq_update/{sample}_NOadapter_L001_R1_001.fastq"),
+        r4 = temp("01_raw_fq_update/{sample}_NOadapter_L001_R2_001.fastq")
     shell:
         """
         cutadapt -j 11 --action=retain  -g  'NNNNNNNNNNNNNNCCATTCCAGCAGCGTGTGCGAACTCAGACCNNNNNNNATCCACGTGCTTGAGAGGCCAGAGCATTCG;min_overlap=82; max_error_rate=0.086;' --minimum-length 124:146  -o {output[0]} -p {output[1]} --untrimmed-output {output[2]} --untrimmed-paired-output {output[3]}  {input[0]} {input[1]}
@@ -37,7 +37,7 @@ rule move_barcode_to_5end_R1:
     input:
         r1 = "01_raw_fq_update/{sample}_adapter_L001_R1_001.fastq"
     output: 
-        r1 = "01_raw_fq_update/{sample}_adapter123_umi_L001_R1_001.fastq"
+        r1 = temp("01_raw_fq_update/{sample}_adapter123_umi_L001_R1_001.fastq")
     shell:
         """
         awk  '{{if(NR%2==0) {{print  substr($0,82,6)  substr($0,46,6) substr($0,1,6)  substr($0,7,8) substr($0,length($0)-10+1,10) substr($0,88)}} else  {{print $0 }} }}' {input}  > {output} 
@@ -61,10 +61,10 @@ rule cut_R2_polyA_adaptor:
         r1 = "01_raw_fq_update/{sample}_cut_tso2_L001_R1_001.fastq.gz",
         r2 = "01_raw_fq_update/{sample}_cut_tso2_L001_R2_001.fastq.gz"
     output: 
-        r1 = "01_raw_fq_update/{sample}_cut_tso2_polyA_L001_R1_001.fastq",
-        r2 = "01_raw_fq_update/{sample}_cut_tso2_polyA_L001_R2_001.fastq",
-        r3 = "01_raw_fq_update/{sample}_cut_R2adapter_L001_R1_001.fastq",
-        r4 = "01_raw_fq_update/{sample}_cut_R2adapter_L001_R2_001.fastq"
+        r1 = temp("01_raw_fq_update/{sample}_cut_tso2_polyA_L001_R1_001.fastq"),
+        r2 = temp("01_raw_fq_update/{sample}_cut_tso2_polyA_L001_R2_001.fastq"),
+        r3 = temp("01_raw_fq_update/{sample}_cut_R2adapter_L001_R1_001.fastq"),
+        r4 = temp("01_raw_fq_update/{sample}_cut_R2adapter_L001_R2_001.fastq")
     shell:
         """
         cutadapt -e 0.15 --action=trim --minimum-length 27  -A 'AAAAAAAAAAAAAAAA;min_overlap=14' -o {output[0]} -p {output[1]} {input[0]} {input[1]}
@@ -77,12 +77,12 @@ rule split_fq_with_oligdT_random_hexamer:
         r1 = "01_raw_fq_update/{sample}_cut_R2adapter_L001_R1_001.fastq",
         r2 = "01_raw_fq_update/{sample}_cut_R2adapter_L001_R2_001.fastq"
     output:
-        "01_raw_fq_update/{sample}_adapter1ME_L001_R1_001.fastq",
-        "01_raw_fq_update/{sample}_adapter1ME_L001_R2_001.fastq",
-        "01_raw_fq_update/{sample}_adapter1RNA_oligodT_L001_R1_001.fastq",
-        "01_raw_fq_update/{sample}_adapter1RNA_oligodT_L001_R2_001.fastq",
-        "01_raw_fq_update/{sample}_adapter1RNA_randomN_L001_R1_001.fastq",
-        "01_raw_fq_update/{sample}_adapter1RNA_randomN_L001_R2_001.fastq"
+        temp("01_raw_fq_update/{sample}_adapter1ME_L001_R1_001.fastq"),
+        temp("01_raw_fq_update/{sample}_adapter1ME_L001_R2_001.fastq"),
+        temp("01_raw_fq_update/{sample}_adapter1RNA_oligodT_L001_R1_001.fastq"),
+        temp("01_raw_fq_update/{sample}_adapter1RNA_oligodT_L001_R2_001.fastq"),
+        temp("01_raw_fq_update/{sample}_adapter1RNA_randomN_L001_R1_001.fastq"),
+        temp("01_raw_fq_update/{sample}_adapter1RNA_randomN_L001_R2_001.fastq")
     shell:
         """
         cutadapt -Z -j {threads} -e 0.2 --action=retain -g file:ME_index --minimum-length 34:27\
@@ -148,7 +148,7 @@ rule read1_barcode_correction_oligodT:
     output :
         "03_corrected_fq/{sample}_oligodT_L001_R1_001.fastq",
         "03_corrected_fq/{sample}_oligodT_L001_R2_001.fastq"
-    log: "00_log/{sample}_L001_R1_corrected.log"
+    log: "00_log/{sample}_oligodT_L001_R1_corrected.log"
     script:
         "script/fq_barcode_correction_R1.py"
 
@@ -160,7 +160,7 @@ rule read1_barcode_correction_randomN:
     output :
         "03_corrected_fq/{sample}_randomN_L001_R1_001.fastq",
         "03_corrected_fq/{sample}_randomN_L001_R2_001.fastq"
-    log: "00_log/{sample}_L001_R1_corrected.log"
+    log: "00_log/{sample}_randomN_L001_R1_corrected.log"
     script:
         "script/fq_barcode_correction_R1.py"
 
@@ -172,7 +172,7 @@ rule read1_barcode_correction_ME:
     output :
         "03_corrected_fq/{sample}_ME_L001_R1_001.fastq",
         "03_corrected_fq/{sample}_ME_L001_R2_001.fastq"
-    log: "00_log/{sample}_L001_R1_corrected.log"
+    log: "00_log/{sample}_ME_L001_R1_corrected.log"
     script:
         "script/fq_barcode_correction_R1.py"
 
