@@ -20,8 +20,8 @@ rule cut_specific_sequences:
         r1 = lambda wildcards: FILES[wildcards.sample]['R1'],
         r2 = lambda wildcards: FILES[wildcards.sample]['R2']
     output:
-        r1 = "01_trim_fq/{sample}_cut_adapt3_L001_R1_001.fastq.gz",
-        r2 = "01_trim_fq/{sample}_cut_adapt3_L001_R2_001.fastq.gz"
+        r1 = temp("01_trim_fq/{sample}_cut_adapt3_L001_R1_001.fastq.gz"),
+        r2 = temp("01_trim_fq/{sample}_cut_adapt3_L001_R2_001.fastq.gz")
     threads: 11
     shell:
         """
@@ -35,8 +35,8 @@ rule move_barcode_to_readName:
         r1 = "01_trim_fq/{sample}_cut_adapt3_L001_R1_001.fastq.gz",
         r2 = "01_trim_fq/{sample}_cut_adapt3_L001_R2_001.fastq.gz"
     output: 
-        r1 = "02_modify_read_name/{sample}_index_L001_R1_001.fastq",
-        r2 = "02_modify_read_name/{sample}_index_L001_R2_001.fastq"
+        r1 = temp("02_modify_read_name/{sample}_index_L001_R1_001.fastq"),
+        r2 = temp("02_modify_read_name/{sample}_index_L001_R2_001.fastq")
     script:
         "script/raw_fq_update.py"
 
