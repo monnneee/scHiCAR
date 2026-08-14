@@ -1,8 +1,6 @@
 # scHiCAR Processed Data
 
-We have uploaded the processed scHiCAR data to [GSE305889](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE305889).
-
-The processed data from the scHiCAR datasets used in our [Nature Biotechnology paper](https://www.nature.com/articles/s41587-026-03013-7) are described below.
+The processed data [GSE305889](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE305889) from the scHiCAR datasets used in our [Nature Biotechnology paper](https://www.nature.com/articles/s41587-026-03013-7) are described below.
 
 ## 1. cellline_scHiCAR
 
