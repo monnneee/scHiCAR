@@ -4,20 +4,19 @@ The processed data [GSE305889](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?ac
 
 ## 1. cellline_scHiCAR
 
-The human cell line scHiCAR dataset, [GSE267117](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE267117), corresponds to **Fig. 1** of our Nature Biotechnology paper.
+Subseries [GSE267117](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE267117), corresponds to human cell line dataset presented in **Fig. 1** of paper.
 
 The following processed files are available:
 
 * **`.pairsam` file**: Read 2 represents the ATAC-seq reads, while paired Read 1 and Read 2 represent the two ends of each chromatin contact.
-* **RNA matrix**: Gene expression matrix.
+* **RNA matrix**: barcode.tsv.gz; features.tsv.gz; matrix.mtx.gz
+* **Metadata files**: cell-level information for each cell barcode.
 
 > **Note:** For the cell line datasets, the RNA and DNA data were generated from **two different batches**. The two libraries were evaluated separately to assess the quality and advantages of the RNA and DNA libraries of scHiCAR, and were not matched at the individual cell level.
 
 ## 2. mouse_brain_scHiCAR_2
 
-[GSE267126](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE267126)
-
-This dataset corresponds to **Figs. 3–5** of our Nature Biotechnology paper.
+Subseries [GSE267126](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE267126) corresponds to mouse brain dataset (1.62 million cells) presented in **Figs. 3–5** of paper.
 
 For each cell type, the following processed files are available:
 
@@ -33,9 +32,7 @@ For both the human cell line and mouse brain datasets described above, ATAC frag
 
 ## 3. mouse_brain_scHiCAR_1
 
-[GSE305439](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE305439)
-
-This dataset generated using our **latest protocol**, corresponds to **Fig. 2** of our Nature Biotechnology paper.
+Subseries [GSE305439](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE305439) generated using our **latest protocol**, corresponds to mouse brain dataset (5,313 cells) presented in **Fig. 2** of paper.
 
 Unlike the earlier protocol, the latest protocol captures **ATAC-seq information in Read 1**.
 
@@ -44,12 +41,11 @@ The following processed files are available:
 * **ATAC fragment files**
 * **Chromatin contact pair files**
 * **RNA matrix files**
-* **Metadata files** 
+* **Metadata files**
 
 ## 4. mouse_skeletal_muscle_scHiCAR
 
-[GSE304674](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE304674)
-This dataset was also generated using our **latest protocol** and corresponds to **Fig. 6** of our Nature Biotechnology paper.
+Subseries [GSE304674](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE304674) was also generated using our **latest protocol** and corresponds to mouse skeletal muscle dataset presented in **Fig. 6** of paper.
 
 The following processed files are available:
 
