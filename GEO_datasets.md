@@ -1,4 +1,4 @@
-# scHiCAR Data Availability and Processed Data
+# scHiCAR Processed Data
 
 We have uploaded the processed scHiCAR data to [GSE305889](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE305889).
 
