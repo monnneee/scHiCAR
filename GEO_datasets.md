@@ -9,7 +9,7 @@ Subseries [GSE267117](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE2671
 The following processed files are available:
 
 * **`.pairsam` file**: Read 2 represents the ATAC-seq reads, while paired Read 1 and Read 2 represent the two ends of each chromatin contact.
-* **RNA matrix**: barcode.tsv.gz; features.tsv.gz; matrix.mtx.gz
+* **RNA matrix**: barcodes.tsv.gz; features.tsv.gz; matrix.mtx.gz
 * **Metadata files**: cell-level information for each cell barcode.
 
 > **Note:** For the cell line datasets, the RNA and DNA data were generated from **two different batches**. The two libraries were evaluated separately to assess the quality and advantages of the RNA and DNA libraries of scHiCAR, and were not matched at the individual cell level.
