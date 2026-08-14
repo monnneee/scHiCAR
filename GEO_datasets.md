@@ -32,7 +32,7 @@ For both the cell line and mouse brain datasets described above, ATAC fragments 
 
 ## 3. mouse_brain_scHiCAR_1
 
-Subseries [GSE305439](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE305439) generated using our **latest protocol**, corresponds to mouse brain dataset (5,313 cells) presented in **Fig. 2** of paper.
+Subseries [GSE305439](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE305439) was generated using our **latest protocol** and corresponds to mouse brain dataset (5,313 cells) presented in **Fig. 2** of paper.
 
 Unlike the earlier protocol, the latest protocol captures **ATAC-seq information in Read 1**.
 
