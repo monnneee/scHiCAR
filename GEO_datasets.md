@@ -4,7 +4,7 @@ The processed data [GSE305889](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?ac
 
 ## 1. cellline_scHiCAR
 
-Subseries [GSE267117](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE267117), corresponds to human cell line dataset presented in **Fig. 1** of paper.
+Subseries [GSE267117](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE267117) corresponds to human cell line dataset presented in **Fig. 1** of paper.
 
 The following processed files are available:
 
