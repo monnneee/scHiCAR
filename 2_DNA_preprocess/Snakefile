@@ -1,3 +1,4 @@
+### August 2026 update: add temp() to remove huge intermediate files.
 shell.prefix("set -eo pipefail; echo BEGIN at $(date); ")
 shell.suffix("; exitstat=$?; echo END at $(date); echo exit status was $exitstat; exit $exitstat")
 import collections
